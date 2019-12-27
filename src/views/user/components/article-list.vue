@@ -10,6 +10,12 @@
       class="article-item"
       v-for="(article, index) in articles"
       :key="index"
+      @click="$router.push({
+        name: 'article',
+        params: {
+          articleId: article.art_id.toString()
+        }
+      })"
     >
       <div class="author">
         <van-image
@@ -20,7 +26,7 @@
         />
         <div>
           <div class="name">{{ user.name }}</div>
-          <div class="date">{{ article.pubdate }}</div>
+          <div class="date">{{ article.pubdate | relativeTime }}</div>
         </div>
       </div>
       <div class="title-cover" v-if="article.cover.type">
@@ -35,15 +41,15 @@
       <div class="action">
         <div class="action-item">
           <van-icon class="comment-icon" name="comment-o" />
-          <span>评论</span>
+          <span>{{ article.comm_count }}</span>
         </div>
         <div class="action-item">
           <van-icon name="good-job-o" />
-          <span>点赞</span>
+          <span>{{ article.like_count }}</span>
         </div>
         <div class="action-item">
           <van-icon name="star-o" />
-          <span>收藏</span>
+          <span>{{ article.collect_count }}</span>
         </div>
       </div>
     </div>

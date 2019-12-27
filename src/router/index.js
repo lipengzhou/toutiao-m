@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 const Login = () => import('@/views/login')
-const Tabbar = () => import('@/views/tabbar')
+const TabBar = () => import('@/views/tabbar')
 const Home = () => import('@/views/home')
 const Search = () => import('@/views/search')
 const SearchResult = () => import('@/views/search-result')
@@ -24,7 +24,7 @@ const routes = [
     // 给拥有默认子路由的路由起名字没有意义，会受到Vue警告
     // name: 'tabbar',
     path: '/',
-    component: Tabbar,
+    component: TabBar,
     children: [
       {
         name: 'home',

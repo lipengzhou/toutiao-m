@@ -5,7 +5,7 @@
     :icon="value ? '' : 'plus'"
     size="small"
     :loading="loading"
-    @click="onFollow"
+    @click.stop="onFollow"
   >{{ value ? '已关注' : '关注' }}</van-button>
 </template>
 

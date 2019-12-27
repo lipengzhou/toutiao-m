@@ -6,6 +6,7 @@
         fit="cover"
         round
         :src="user.photo"
+        @click="onPreview(user.photo)"
       />
       <div class="col2">
         <div class="row1">
@@ -57,6 +58,7 @@
 </template>
 
 <script>
+import { ImagePreview } from 'vant'
 import FollowUser from '@/components/follow-user'
 
 export default {
@@ -71,6 +73,13 @@ export default {
   },
   components: {
     FollowUser
+  },
+  methods: {
+    onPreview (src) {
+      ImagePreview([
+        src
+      ])
+    }
   }
 }
 </script>

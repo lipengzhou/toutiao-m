@@ -26,13 +26,13 @@
     <div v-else-if="article.title">
       <div class="detail">
         <h3 class="title">{{ article.title }}</h3>
-        <div class="author" ref="author">
-          <div class="base-info" @click="$router.push({
-            name: 'user',
-            params: {
-              userId: article.aut_id.toString()
-            }
-          })">
+        <div class="author" ref="author" @click="$router.push({
+          name: 'user',
+          params: {
+            userId: article.aut_id.toString()
+          }
+        })">
+          <div class="base-info">
             <van-image
               round
               width="1rem"

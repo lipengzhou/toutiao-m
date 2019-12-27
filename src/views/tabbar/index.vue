@@ -49,7 +49,7 @@
 
 <script>
 export default {
-  name: 'TabarPage',
+  name: 'TabBar',
   components: {},
   props: {},
   data () {
