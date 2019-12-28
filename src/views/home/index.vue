@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home page-container">
     <!-- 导航栏 -->
     <van-nav-bar class="page-navbar" fixed>
       <van-button
@@ -14,7 +14,7 @@
     <!-- 导航栏 -->
 
     <!-- 频道列表 -->
-    <van-tabs v-model="active" swipeable>
+    <van-tabs class="fixed-tabs" v-model="active" swipeable>
       <van-tab
         :title="channel.name"
         v-for="channel in channels"
@@ -95,7 +95,6 @@
      -->
     <van-popup
       v-model="isChannelShow"
-      round
       position="bottom"
       closeable
       close-icon-position="top-left"
@@ -322,21 +321,6 @@ export default {
   }
   .article-info span {
     margin-right: 10px;
-  }
-  .van-tabs {
-    // 频道列表
-    ::v-deep .van-tabs__wrap {
-      position: fixed;
-      top: 46px;
-      z-index: 2;
-      right: 0;
-      left: 0;
-    }
-    // 频道内容
-    ::v-deep .van-tabs__content {
-      margin-top: 90px;
-      margin-bottom: 50px;
-    }
   }
   .wap-nav {
     position: sticky;

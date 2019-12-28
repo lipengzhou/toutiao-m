@@ -1,16 +1,15 @@
 <template>
   <div
-    class="article-container"
+    class="article-container page-container"
     ref="article-container"
-    @scroll="onArticleScroll"
   >
     <!-- 导航栏 -->
     <van-nav-bar
       class="page-navbar"
       fixed
+      title="文章详情"
       left-arrow
       @click-left="$router.back()"
-      title="文章详情"
     ></van-nav-bar>
     <!-- /导航栏 -->
 
@@ -45,44 +44,25 @@
               <p class="time">{{ article.pubdate | relativeTime }}</p>
             </div>
           </div>
+          <!-- 如果没登录或者当前文章作者不是当前登录用户 -->
           <follow-user
-            v-if="article.aut_id.toString() !== $store.state.user.id.toString() && article.aut_id"
+            v-if="!user || article.aut_id !== user.id"
             v-model="article.is_followed"
             :user-id="article.aut_id"
           />
         </div>
         <div class="content markdown-body" v-html="article.content"></div>
-        <div class="zan">
-          <van-button
-            round
-            size="small"
-            hairline
-            :type="article.attitude === 1 ? 'danger' : 'default'"
-            plain
-            :icon="article.attitude === 1 ? 'good-job' : 'good-job-o'"
-            @click="onLike"
-            :loading="isLikeLoading"
-          >{{ article.attitude === 1 ? '取消点赞' : '点赞' }}</van-button>
-          &nbsp;&nbsp;&nbsp;&nbsp;
-          <van-button
-            round
-            size="small"
-            hairline
-            :type="article.attitude === 0 ? 'danger' : 'default'"
-            plain
-            icon="delete"
-            @click="onDislike"
-            :loading="isUnLikeLoading"
-          >{{ article.attitude === 0 ? '取消不喜欢' : '不喜欢' }}</van-button>
-        </div>
       </div>
 
       <!-- 文章评论列表 -->
-      <article-comment
-        class="comment-list"
-        ref="article-comment"
-        @add-success="onAddSuccess"
-      />
+      <loading-list
+        v-model="articleComments"
+        :fn="getArticleComments"
+        v-slot="{ item }"
+        :totalCount.sync="articleCommentCount"
+      >
+        <comment-item :comment="item" @reply-show="onReplyShow" />
+      </loading-list>
       <!-- /文章评论列表 -->
 
       <!-- 底部区域 -->
@@ -94,41 +74,16 @@
           size="small"
           @click="isPostShow = true"
         >写评论</van-button>
-        <van-icon class="comment-icon" name="comment-o" info="9" />
+        <van-icon
+          class="comment-icon"
+          name="comment-o"
+          :info="articleCommentCount"
+        />
         <van-icon name="star-o" />
+        <van-icon name="good-job-o" />
         <van-icon class="share-icon" name="share" />
       </div>
       <!-- /底部区域 -->
-
-      <!-- 发布文章评论 -->
-      <van-popup
-        class="post-popup"
-        v-model="isPostShow"
-        position="bottom"
-        @opened="onOpen"
-      >
-        <van-row type="flex" align="center">
-          <van-col span="20">
-            <van-field
-              ref="post-input"
-              rows="2"
-              v-model="message"
-              autosize
-              type="textarea"
-              maxlength="50"
-              placeholder="请输入留言"
-              show-word-limit
-            />
-          </van-col>
-          <van-col
-            class="post-btn"
-            span="4"
-            :style="{ color: message.length ? '#4a8ecf' : '#666' }"
-            @click="onPostMessage"
-          >发布</van-col>
-        </van-row>
-      </van-popup>
-      <!-- /发布文章评论 -->
     </div>
     <!-- /文章详情 -->
 
@@ -137,6 +92,37 @@
       <p class="text">亲，网络不给力哦~</p>
       <van-button type="default" size="normal" @click="loadArticle">点击重试</van-button>
     </div>
+
+    <!-- 发布文章评论 -->
+    <van-popup
+      class="post-comment-popup"
+      v-model="isPostShow"
+      position="bottom"
+    >
+      <post-comment :target="articleId" @post-success="onPostArticleCommentSuccess" />
+    </van-popup>
+    <!-- /发布文章评论 -->
+
+    <!-- 评论回复 -->
+    <van-popup
+      v-model="isReplyShow"
+      position="bottom"
+      :style="{ height: '95%' }"
+    >
+      <van-nav-bar :title="`${replyComment.reply_count}条回复`">
+        <van-icon slot="left" name="cross" @click="isReplyShow = false" />
+      </van-nav-bar>
+      <comment-item :comment="replyComment" :reply="false" />
+      <van-cell title="全部评论" :border="false" />
+      <loading-list
+        v-if="isReplyShow"
+        :fn="getCommentReplies.bind(null, replyComment.com_id)"
+        v-slot="{ item }"
+      >
+        <comment-item :comment="item" />
+      </loading-list>
+    </van-popup>
+    <!-- /评论回复 -->
   </div>
 </template>
 
@@ -144,17 +130,17 @@
 import {
   getArticle,
   addLike,
-  deleteLike,
-  addDislike,
-  deleteDislike
+  deleteLike
 } from '@/api/article'
-import ArticleComment from './components/article-comments'
-import { throttle } from 'lodash'
 import FollowUser from '@/components/follow-user'
+import { mapState } from 'vuex'
+import { getArticleComments, getCommentReplies } from '@/api/comment'
+import LoadingList from '@/components/loading-list'
+import CommentItem from './components/comment-item'
+import PostComment from './components/post-comment'
 
 export default {
   name: 'ArticlePage',
-
   props: {
     articleId: {
       type: [String, Number],
@@ -163,28 +149,32 @@ export default {
   },
 
   components: {
-    ArticleComment,
-    FollowUser
+    FollowUser,
+    LoadingList,
+    CommentItem,
+    PostComment
   },
 
   data () {
     return {
       loading: true, // 控制加载中的 loading 状态
       article: {}, // 文章详情
-      isLikeLoading: false,
-      isUnLikeLoading: false,
       isPostShow: false,
-      message: ''
+      getArticleComments: getArticleComments.bind(null, this.articleId),
+      getCommentReplies,
+      articleCommentCount: 0,
+      replyComment: {},
+      isReplyShow: false,
+      articleComments: []
     }
   },
-
+  computed: {
+    ...mapState(['user'])
+  },
   created () {
     this.loadArticle()
   },
-
-  mounted () {
-  },
-
+  mounted () {},
   methods: {
     async loadArticle () {
       // 开启转圈圈
@@ -215,36 +205,19 @@ export default {
       this.isLikeLoading = false
     },
 
-    async onDislike () {
-      this.isUnLikeLoading = true
-      // 如果已关注，则取消关注
-      if (this.article.attitude === 0) {
-        await deleteDislike(this.articleId)
-        this.article.attitude = -1
-      } else {
-        // 如果没有关注，则关注
-        await addDislike(this.articleId)
-        this.article.attitude = 0
-      }
-      this.isUnLikeLoading = false
+    onReplyShow (comment) {
+      this.replyComment = comment
+      this.isReplyShow = true
     },
 
-    onAddSuccess () {
-      const y = this.$refs['article-comment'].$el.offsetTop - 50
-      this.$refs['article-container'].scrollTop = y
-    },
+    onPostArticleCommentSuccess (comment) {
+      this.articleComments.unshift(comment)
+      this.isPostShow = false
+      this.articleCommentCount++
 
-    onArticleScroll: throttle(function () {
-      // console.log(this.$refs['author'].offsetHeight)
-    }, 500),
-
-    onOpen () {
-      setTimeout(() => {
-        this.$refs['post-input'].focus()
-      }, 1000)
-    },
-
-    onPostMessage () {
+      // 滚动到新加的评论项位置
+      // const y = this.$refs['article-comment'].$el.offsetTop - 50
+      // this.$refs['article-container'].scrollTop = y
     }
   }
 }
@@ -253,15 +226,6 @@ export default {
 <style scoped lang="less">
 @import url('./github-markdown.css');
 
-.article-container {
-  position: absolute;
-  left: 0;
-  top: 0;
-  overflow-y: scroll;
-  width: 100%;
-  height: 100%;
-  background-color: #fff;
-}
 .article-loading {
   padding-top: 100px;
   text-align: center;
@@ -277,7 +241,6 @@ export default {
   }
 }
 .detail {
-  padding: 50px 15px;
   .title {
     font-size: 20px;
     color: #3A3A3A;
@@ -323,7 +286,7 @@ export default {
   border-top: 1px solid #d8d8d8;
   background-color: #fff;
   .write-btn {
-    width: 200px;
+    width: 160px;
   }
   .van-icon {
     font-size: 20px;
@@ -340,16 +303,9 @@ export default {
   margin-bottom: 180px;
 }
 
-.post-popup {
+.post-comment-popup {
   box-sizing: border-box;
   padding: 10px;
   padding-right: 0;
-  .van-cell {
-    background-color: #f5f7f9;
-  }
-  .post-btn {
-    font-size: 15px;
-    text-align: center;
-  }
 }
 </style>

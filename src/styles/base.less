@@ -22,9 +22,20 @@ body {
 }
 
 .page-container {
-	padding-top: 46px;
-	padding-bottom: 50px;
+  padding: 46px 12px 50px;
+  background: #fff;
   font-size: 14px;
+}
+
+.fixed-tabs {
+  padding-top: 44px;
+  .van-tabs__wrap {
+    position: fixed;
+    top: 46px;
+    right: 0;
+    left: 0;
+    z-index: 2;
+  }
 }
 
 .van-button--default {

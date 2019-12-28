@@ -5,7 +5,7 @@
       title="问答"
       fixed
     />
-    <h3>开发中...</h3>
+    <h1>开发中...</h1>
   </div>
 </template>
 

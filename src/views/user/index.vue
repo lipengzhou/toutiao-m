@@ -15,15 +15,19 @@
     <!-- /用户信息 -->
 
     <!-- 文章列表 -->
-    <article-list :user="user" />
+    <loading-list :fn="getArticlesByUser" v-slot="{ item }">
+      <article-item :article="item" />
+    </loading-list>
     <!-- /文章列表 -->
   </div>
 </template>
 
 <script>
 import { getUserById } from '@/api/user'
+import { getArticlesByUser } from '@/api/article'
 import UserInfo from './components/user-info'
-import ArticleList from './components/article-list'
+import LoadingList from '@/components/loading-list'
+import ArticleItem from './components/article-item'
 
 export default {
   beforeRouteLeave (to, from, next) {
@@ -44,7 +48,8 @@ export default {
   name: 'UserPage',
   components: {
     UserInfo,
-    ArticleList
+    LoadingList,
+    ArticleItem
   },
   props: {
     userId: {
@@ -56,7 +61,8 @@ export default {
     return {
       user: {
         id: this.userId
-      } // 用户信息
+      }, // 用户信息
+      getArticlesByUser: getArticlesByUser.bind(null, this.userId)
     }
   },
   computed: {},
