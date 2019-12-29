@@ -19,7 +19,11 @@
       <div class="detail">
         <h3>{{ article.title }}</h3>
         <article-auth :article="article" />
-        <div class="markdown-body" v-html="article.content"></div>
+        <div
+          class="markdown-body"
+          v-html="article.content"
+          ref="article-content"
+        ></div>
       </div>
 
       <!-- 文章评论列表 -->
@@ -82,6 +86,7 @@ import ArticleFooter from './components/article-footer'
 import CommentList from './components/comment-list'
 import PostComment from './components/post-comment'
 import CommentReply from './components/comment-reply'
+import { ImagePreview } from 'vant'
 
 export default {
   name: 'ArticlePage',
@@ -123,6 +128,20 @@ export default {
       try {
         const res = await getArticle(this.articleId)
         this.article = res.data.data
+
+        // 点击图片预览
+        setTimeout(() => {
+          const imgs = this.$refs['article-content'].querySelectorAll('img')
+          const paths = Array.from(imgs).map(img => img.src)
+          imgs.forEach((img, index) => {
+            img.onclick = () => {
+              ImagePreview({
+                images: paths,
+                startPosition: index
+              })
+            }
+          })
+        }, 0)
       } catch (err) {
         console.log(err)
       }
