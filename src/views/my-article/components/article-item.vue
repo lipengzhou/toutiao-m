@@ -13,7 +13,7 @@
         class="avatar"
         round
         fit="cover"
-        :src="article.aut_photo"
+        src="https://img.yzcdn.cn/vant/cat.jpeg"
       />
       <div>
         <div class="name">{{ article.aut_name }}</div>

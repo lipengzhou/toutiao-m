@@ -17,8 +17,7 @@ export default {
   components: {},
   props: {
     value: {
-      type: Boolean,
-      required: true
+      type: Boolean
     },
     userId: {
       type: [Number, String],

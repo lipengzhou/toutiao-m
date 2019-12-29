@@ -113,3 +113,26 @@ export function getUserHistoryArticles (params) {
     params
   })
 }
+
+/**
+ * 收藏文章
+ */
+export function addCollect (articleId) {
+  return request({
+    method: 'POST',
+    url: '/app/v1_0/article/collections',
+    data: {
+      target: articleId // 收藏的目标文章id
+    }
+  })
+}
+
+/**
+ * 取消收藏
+ */
+export function deleteCollect (articleId) {
+  return request({
+    method: 'DELETE',
+    url: `/app/v1_0/article/collections/${articleId}`
+  })
+}

@@ -30,7 +30,7 @@
         <div>
           <!-- 如果当前登录用户的 id !== 文章作者id，则显示关注 -->
           <follow-user
-            v-if="user.id && user.id.toString() !== $store.state.user.id.toString()"
+            v-if="!sessionUser || user.id !== sessionUser.id"
             v-model="user.is_following"
             :user-id="user.id"
           />
@@ -60,6 +60,7 @@
 <script>
 import { ImagePreview } from 'vant'
 import FollowUser from '@/components/follow-user'
+import { mapState } from 'vuex'
 
 export default {
   name: 'UserInfo',
@@ -73,6 +74,11 @@ export default {
   },
   components: {
     FollowUser
+  },
+  computed: {
+    ...mapState({
+      sessionUser: state => state.user
+    })
   },
   methods: {
     onPreview (src) {

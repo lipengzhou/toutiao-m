@@ -69,6 +69,8 @@ export default {
         newComment.is_liking = false
 
         this.$emit('post-success', newComment)
+
+        this.content = ''
       } catch (err) {
         console.log(err)
         this.$toast('发布失败')
