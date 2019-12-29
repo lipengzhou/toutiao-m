@@ -5,6 +5,7 @@
       type="default"
       round
       size="small"
+      @click="$emit('click-write')"
     >写评论</van-button>
     <van-icon
       class="comment-icon"
@@ -19,14 +20,13 @@
     <van-icon
       :color="article.attitude === 1 ? '#e5645f' : ''"
       :name="article.attitude === 1 ? 'good-job' : 'good-job-o'"
-      @click='onLike'
+      @click="onLike"
     />
     <van-icon class="share-icon" name="share" />
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
 import {
   addCollect,
   deleteCollect,
@@ -41,14 +41,16 @@ export default {
     article: {
       type: Object,
       required: true
+    },
+    commentCount: {
+      type: Number,
+      default: 0
     }
   },
   data () {
     return {}
   },
-  computed: {
-    ...mapState('article', ['commentCount'])
-  },
+  computed: {},
   watch: {},
   created () {},
   mounted () {},

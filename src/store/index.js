@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import { setItem, getItem } from '@/utils/storage'
 import { getProfile } from '@/api/user'
-import article from './modules/article'
 
 Vue.use(Vuex)
 
@@ -34,8 +33,5 @@ export default new Vuex.Store({
         })
       }
     }
-  },
-  modules: {
-    article
   }
 })

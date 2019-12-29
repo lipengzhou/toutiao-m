@@ -15,19 +15,30 @@
     <!-- /加载中：loading -->
 
     <!-- 加载完成：文章详情 -->
-    <div v-else-if="article.title">
-      <h3>{{ article.title }}</h3>
-      <article-auth :article="article" />
-      <div class="markdown-body" v-html="article.content"></div>
+    <template v-else-if="article.title">
+      <div class="detail">
+        <h3>{{ article.title }}</h3>
+        <article-auth :article="article" />
+        <div class="markdown-body" v-html="article.content"></div>
+      </div>
 
       <!-- 文章评论列表 -->
-      <article-comment :article-id="articleId" />
+      <comment-list
+        v-model="articleComments"
+        :source="articleId"
+        :total-count.sync="commentCount"
+        @click-reply="onReplyShow"
+      />
       <!-- /文章评论列表 -->
 
       <!-- 底部区域 -->
-      <article-footer :article="article" />
+      <article-footer
+        :article="article"
+        :comment-count="commentCount"
+        @click-write="isPostCommentShow = true"
+      />
       <!-- /底部区域 -->
-    </div>
+    </template>
     <!-- /加载完成：文章详情 -->
 
     <!-- 加载失败：错误页面 -->
@@ -35,14 +46,30 @@
     <!-- /加载失败：错误页面 -->
 
     <!-- 发布文章评论 -->
-    <!-- <van-popup
-      class="post-comment-popup"
-      v-model="articleComment.isPostShow"
+    <van-popup
+      v-model="isPostCommentShow"
       position="bottom"
+      get-container="body"
     >
-      <post-comment :target="articleId" @post-success="onPostArticleCommentSuccess" />
-    </van-popup> -->
+      <post-comment :target="articleId" @post-success="onPostSuccess" />
+    </van-popup>
     <!-- /发布文章评论 -->
+
+    <!-- 评论回复 -->
+    <van-popup
+      v-model="isReplyShow"
+      position="bottom"
+      get-container="body"
+      :style="{ height: '90%' }"
+    >
+      <comment-reply
+        v-if="isReplyShow"
+        :article-id="articleId"
+        :comment="currentReplyComment"
+        @click-close="isReplyShow = false"
+      />
+    </van-popup>
+    <!-- 评论回复 -->
   </div>
 </template>
 
@@ -52,7 +79,9 @@ import ArticleAuth from '@/components/article-auth'
 import LoadingPage from '@/components/loading-page'
 import ErrorPage from '@/components/error-page'
 import ArticleFooter from './components/article-footer'
-import ArticleComment from './components/article-comment'
+import CommentList from './components/comment-list'
+import PostComment from './components/post-comment'
+import CommentReply from './components/comment-reply'
 
 export default {
   name: 'ArticlePage',
@@ -67,15 +96,19 @@ export default {
     LoadingPage,
     ErrorPage,
     ArticleFooter,
-    ArticleComment
+    CommentList,
+    PostComment,
+    CommentReply
   },
   data () {
     return {
       loading: true, // 控制加载中的 loading 状态
       article: {}, // 文章详情
-      isPostShow: false,
       currentReplyComment: {},
-      isReplyShow: false
+      isReplyShow: false,
+      isPostCommentShow: false,
+      articleComments: [],
+      commentCount: 0
     }
   },
   created () {
@@ -119,6 +152,17 @@ export default {
       commentReply.list.unshift(comment)
       commentReply.isPostShow = false
       commentReply.totalCount++
+    },
+
+    onPostSuccess (comment) {
+      // 将新添加的评论展示到顶部
+      this.articleComments.unshift(comment)
+
+      // 评论总数+1
+      this.commentCount++
+
+      // 关闭发布评论弹窗
+      this.isPostCommentShow = false
     }
   }
 }
@@ -126,6 +170,10 @@ export default {
 
 <style scoped lang="less">
 @import url('./github-markdown.css');
+
+.detail {
+  padding: 0 20px;
+}
 
 .markdown-body {
   padding-bottom: 50px;

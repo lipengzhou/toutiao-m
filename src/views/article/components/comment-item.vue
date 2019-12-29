@@ -17,13 +17,13 @@
           v-if="reply"
           size="mini"
           type="default"
-          @click="$emit('reply', comment)"
+          @click="$emit('click-reply')"
         >回复 {{ comment.reply_count }}</van-button>
       </p>
     </div>
     <div slot="right-icon" class="like-container">
       <van-icon
-        color="red"
+        :color="comment.is_liking ? '#e5645f' : ''"
         :name="comment.is_liking ? 'good-job' : 'good-job-o'"
         @click="onCommentLike(comment)"
       />
@@ -60,18 +60,23 @@ export default {
   created () {},
   methods: {
     async onCommentLike (comment) {
-      // 如果已经赞了则取消点赞
-      if (comment.is_liking) {
-        await deleteCommentLike(comment.com_id)
-      } else {
-        // 如果没有赞，则点赞
-        await addCommentLike(comment.com_id)
-      }
+      try {
+        // 如果已经赞了则取消点赞
+        if (comment.is_liking) {
+          await deleteCommentLike(comment.com_id)
+        } else {
+          // 如果没有赞，则点赞
+          await addCommentLike(comment.com_id)
+        }
 
-      // 更新视图状态
-      comment.is_liking = !comment.is_liking
-      comment.like_count += comment.is_liking ? 1 : -1
-      this.$toast('操作成功')
+        // 更新视图状态
+        comment.is_liking = !comment.is_liking
+        comment.like_count += comment.is_liking ? 1 : -1
+        this.$toast.success(comment.is_liking ? '点赞成功' : '取消点赞')
+      } catch (err) {
+        console.log(err)
+        this.$toast.fail('操作失败')
+      }
     }
   }
 }

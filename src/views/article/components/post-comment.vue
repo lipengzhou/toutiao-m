@@ -1,5 +1,5 @@
 <template>
-  <van-row type="flex" align="center">
+  <van-row class="post-comment" type="flex" align="center">
     <van-col span="20">
       <van-field
         ref="post-input"
@@ -8,7 +8,7 @@
         autosize
         type="textarea"
         maxlength="50"
-        placeholder="请输入留言"
+        :placeholder="inputPlaceholder"
         show-word-limit
       />
     </van-col>
@@ -35,6 +35,10 @@ export default {
     articleId: {
       type: [Number, Object, String],
       default: null
+    },
+    replyTo: {
+      type: Object,
+      default: null
     }
   },
   data () {
@@ -42,16 +46,32 @@ export default {
       content: ''
     }
   },
-  computed: {},
+  computed: {
+    inputPlaceholder () {
+      const replyTo = this.replyTo
+      return replyTo ? `回复 ${replyTo.aut_name}` : '优质评论将会被优先展示'
+    }
+  },
   watch: {
   },
   created () {},
   methods: {
     async onPostComment () {
+      this.$toast.loading({
+        duration: 0, // 持续展示 toast
+        forbidClick: true,
+        message: '发布中'
+      })
+
       try {
-        const content = this.content
+        let { content, replyTo } = this
+
         if (!content) {
           return
+        }
+
+        if (replyTo) {
+          content += `//@${replyTo.aut_name}: ${replyTo.content}`
         }
 
         const articleId = this.articleId ? this.articleId.toString() : null
@@ -70,10 +90,12 @@ export default {
 
         this.$emit('post-success', newComment)
 
+        this.$toast.success('发布成功')
+
         this.content = ''
       } catch (err) {
-        console.log(err)
-        this.$toast('发布失败')
+        console.log('发布失败', err)
+        this.$toast.fail('发布失败')
       }
     }
   }
@@ -81,6 +103,10 @@ export default {
 </script>
 
 <style scoped>
+.post-comment {
+  padding: 12px;
+}
+
 .van-cell {
   background-color: #f5f7f9;
 }

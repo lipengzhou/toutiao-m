@@ -3,13 +3,14 @@
   <van-list
     v-model="loading"
     :finished="finished"
-    finished-text="以展示所有评论"
+    finished-text="已展示所有评论"
     @load="onLoad"
   >
     <comment-item
-      v-for="(comment, index) in list"
+      v-for="(comment, index) in value"
       :key="index"
       :comment="comment"
+      @click-reply="$emit('click-reply', comment)"
     />
   </van-list>
   <!-- /文章评论列表 -->
@@ -18,17 +19,29 @@
 <script>
 import CommentItem from './comment-item'
 import { getComments } from '@/api/comment'
-import { mapMutations } from 'vuex'
 
 export default {
-  name: 'ArticleComment',
+  name: 'CommentList',
   components: {
     CommentItem
   },
   props: {
-    articleId: {
+    // 查看文章评论：文章ID
+    // 查看评论回复：评论ID
+    source: {
       type: [String, Number, Object],
       required: true
+    },
+    value: {
+      type: Array,
+      default: () => []
+    },
+    totalCount: {
+      type: Number
+    },
+    isComment: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -45,20 +58,21 @@ export default {
   },
   created () {},
   methods: {
-    ...mapMutations('article', ['setCommentCount']),
     async onLoad () {
       // 1. 请求获取数据
       const { data } = await getComments({
-        type: 'a',
-        source: this.articleId.toString(),
+        type: this.isComment ? 'c' : 'a', // 查看文章评论：a，查看评论回复：c
+        source: this.source.toString(),
         offset: this.offset,
         limit: this.limit
       })
 
       // 2. 将数据放到列表中
-      const { results } = data.data
-      this.list.push(...results)
-      this.setCommentCount(data.data.total_count)
+      const { results, total_count: totalCount } = data.data
+      const arr = this.value.slice()
+      arr.push(...results)
+      this.$emit('input', arr)
+      this.$emit('update:total-count', totalCount)
 
       // 3. 结束 loading
       this.loading = false
