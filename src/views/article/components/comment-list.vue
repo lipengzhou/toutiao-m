@@ -4,6 +4,7 @@
     v-model="loading"
     :finished="finished"
     finished-text="已展示所有评论"
+    :immediate-check="false"
     @load="onLoad"
   >
     <comment-item
@@ -56,7 +57,9 @@ export default {
   computed: {},
   watch: {
   },
-  created () {},
+  created () {
+    this.onLoad()
+  },
   methods: {
     async onLoad () {
       // 1. 请求获取数据

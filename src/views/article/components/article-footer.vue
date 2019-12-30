@@ -11,6 +11,7 @@
       class="comment-icon"
       name="comment-o"
       :info="commentCount"
+      @click="$emit('click-comment')"
     />
     <van-icon
       :color="article.is_collected ? 'orange' : ''"

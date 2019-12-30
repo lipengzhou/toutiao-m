@@ -1,5 +1,5 @@
 <template>
-  <van-cell>
+  <van-cell class="comment-item">
     <van-image
       slot="icon"
       round
@@ -83,6 +83,11 @@ export default {
 </script>
 
 <style scoped>
+.comment-item {
+  display: flex;
+  align-items: flex-start;
+}
+
 .like-container {
   width: 30px;
   display: flex;

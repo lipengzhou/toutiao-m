@@ -1,5 +1,5 @@
 <template>
-  <div class="article-container page-container">
+  <div class="article-container page-container" ref="article-container">
     <!-- 导航栏 -->
     <van-nav-bar
       class="page-navbar"
@@ -24,7 +24,10 @@
           v-html="article.content"
           ref="article-content"
         ></div>
+        <van-divider>正文结束</van-divider>
       </div>
+
+      <van-cell ref="comment-area-tip" title="全部评论" :border="false" />
 
       <!-- 文章评论列表 -->
       <comment-list
@@ -40,6 +43,7 @@
         :article="article"
         :comment-count="commentCount"
         @click-write="isPostCommentShow = true"
+        @click-comment="onClickComment"
       />
       <!-- /底部区域 -->
     </template>
@@ -129,21 +133,13 @@ export default {
         const res = await getArticle(this.articleId)
         this.article = res.data.data
 
-        // 点击图片预览
+        // 给文章内容中的图片添加点击预览
         setTimeout(() => {
-          const imgs = this.$refs['article-content'].querySelectorAll('img')
-          const paths = Array.from(imgs).map(img => img.src)
-          imgs.forEach((img, index) => {
-            img.onclick = () => {
-              ImagePreview({
-                images: paths,
-                startPosition: index
-              })
-            }
-          })
+          this.addImagePreview()
         }, 0)
       } catch (err) {
         console.log(err)
+        this.$toast.fail('获取数据失败')
       }
 
       // 请求结束，关闭转圈圈
@@ -155,24 +151,6 @@ export default {
       this.isReplyShow = true
     },
 
-    onPostArticleCommentSuccess (comment) {
-      const articleComment = this.articleComment
-      articleComment.list.unshift(comment)
-      articleComment.isPostShow = false
-      articleComment.totalCount++
-
-      // 滚动到新加的评论项位置
-      // const y = this.$refs['article-comment'].$el.offsetTop - 50
-      // this.$refs['article-container'].scrollTop = y
-    },
-
-    onPostReplySuccess (comment) {
-      const commentReply = this.commentReply
-      commentReply.list.unshift(comment)
-      commentReply.isPostShow = false
-      commentReply.totalCount++
-    },
-
     onPostSuccess (comment) {
       // 将新添加的评论展示到顶部
       this.articleComments.unshift(comment)
@@ -182,6 +160,24 @@ export default {
 
       // 关闭发布评论弹窗
       this.isPostCommentShow = false
+    },
+
+    addImagePreview () {
+      const imgs = this.$refs['article-content'].querySelectorAll('img')
+      const imgPaths = Array.from(imgs).map(img => img.src)
+      imgs.forEach((img, index) => {
+        img.addEventListener('click', () => ImagePreview({
+          images: imgPaths,
+          startPosition: index
+        }))
+      })
+    },
+
+    onClickComment () {
+      // 让页面滚动到评论区
+      const articleContainer = this.$refs['article-container']
+      const commentAreaTip = this.$refs['comment-area-tip']
+      articleContainer.scrollTop = commentAreaTip.offsetTop - 50
     }
   }
 }
@@ -189,6 +185,10 @@ export default {
 
 <style scoped lang="less">
 @import url('./github-markdown.css');
+.article-container {
+  height: 100%;
+  overflow: scroll;
+}
 
 .detail {
   padding: 0 20px;

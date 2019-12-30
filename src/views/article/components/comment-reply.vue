@@ -88,15 +88,20 @@ export default {
     }
   },
   computed: {},
-  watch: {
-    target () {
-      console.log(this.target.toString())
-    }
-  },
+  watch: {},
   created () {},
   methods: {
     onPostSuccess (comment) {
+      // 将新添加的评论展示到顶部
       this.comments.unshift(comment)
+
+      // 更新评论总数
+      this.commentCount++
+
+      // 更新当前评论中的总数量
+      this.comment.reply_count++
+
+      // 关闭发布弹窗
       this.isPostShow = false
     },
 

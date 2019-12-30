@@ -23,6 +23,8 @@
       v-if="!user || article.aut_id !== user.id"
       v-model="article.is_followed"
       :user-id="article.aut_id"
+      round
+      style="width: 30%"
     />
   </div>
 </template>
@@ -56,7 +58,7 @@ export default {
 
 <style scoped lang="less">
 .author {
-  padding: 20px 0;
+  padding: 10px 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
