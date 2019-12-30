@@ -27,52 +27,11 @@
             finished-text="没有更多了"
             @load="onLoad"
           >
-            <!--
-              直接拼：
-                @click="$router.push('/article/' + article.art_id)"
-              使用 ES6 模板字符串拼：
-                @click="$router.push(`/article/${article.art_id}`)"
-              根据路由名字跳转传参：
-                @click="$router.push({
-                  name: 'article',
-                  // params 是固定的
-                  params: {
-                    // key：动态路径参数的名字
-                    // value：数据值
-                    articleId: article.art_id
-                  }
-                })"
-             -->
-            <van-cell
-              v-for="article in channel.articles"
-              :key="article.art_id.toString()"
-              :title="article.title"
-              @click="$router.push({
-                name: 'article',
-                // params 是固定的
-                params: {
-                  // key：动态路径参数的名字
-                  // value：数据值
-                  articleId: article.art_id.toString()
-                }
-              })"
-            >
-              <div slot="label">
-                <van-grid :border="false" :column-num="3">
-                  <van-grid-item
-                    v-for="(img, index) in article.cover.images"
-                    :key="index"
-                  >
-                    <van-image height="70" fit="cover" :src="img" lazy-load />
-                  </van-grid-item>
-                </van-grid>
-                <div class="article-info">
-                  <span>{{ article.aut_name }}</span>
-                  <span>{{ article.comm_count }}评论</span>
-                  <span>{{ article.pubdate | relativeTime }}</span>
-                </div>
-              </div>
-            </van-cell>
+            <article-item
+              :article="article"
+              v-for="(article, index) in channel.articles"
+              :key="index"
+            />
           </van-list>
         </van-pull-refresh>
         <!-- /文章列表 -->
@@ -154,10 +113,13 @@ import { getUserChannels } from '@/api/user'
 import { getArticles } from '@/api/article'
 import { getAllChannels } from '@/api/channel'
 import { setItem, getItem } from '@/utils/storage'
+import ArticleItem from '@/components/article-item'
 
 export default {
   name: 'HomePage',
-  components: {},
+  components: {
+    ArticleItem
+  },
   props: {},
   data () {
     return {
@@ -329,6 +291,7 @@ export default {
     align-items: center;
     background-color: #fff;
     opacity: .8;
+    font-size: 26px;
   }
   .channel-container {
     padding-top: 30px;

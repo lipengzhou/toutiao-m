@@ -28,7 +28,9 @@
           </div>
         </div>
         <div>
-          <!-- 如果当前登录用户的 id !== 文章作者id，则显示关注 -->
+          <!--
+            展示条件：如果没有登录 || 当前页面用户非登录用户
+          -->
           <follow-user
             v-if="!sessionUser || user.id !== sessionUser.id"
             v-model="user.is_following"
