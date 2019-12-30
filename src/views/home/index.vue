@@ -1,17 +1,18 @@
 <template>
   <div class="home page-container">
     <!-- 导航栏 -->
-    <van-nav-bar class="page-navbar" fixed>
+    <div class="nav-bar">
+      <div class="logo"></div>
       <van-button
-        class="search-button"
-        slot="title"
+        class="search-btn"
         round
         type="info"
         size="small"
+        icon="search"
         @click="$router.push('/search')"
       >搜索</van-button>
-    </van-nav-bar>
-    <!-- 导航栏 -->
+    </div>
+    <!-- /导航栏 -->
 
     <!-- 频道列表 -->
     <van-tabs class="fixed-tabs" v-model="active" swipeable>
@@ -277,9 +278,28 @@ export default {
 
 <style lang="less" scoped>
 .home {
-  .search-button {
+  .nav-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px;
     width: 100%;
-    background-color: #5babfb;
+    height: 46px;
+    background-color: #3196fa;
+    z-index: 1;
+    .logo {
+      background: url("./logo.png") no-repeat;
+      background-size: cover;
+      width: 100px;
+      height: 30px;
+    }
+    .search-btn {
+      background-color: #5babfb;
+      width: 50%;
+    }
   }
   .article-info span {
     margin-right: 10px;
