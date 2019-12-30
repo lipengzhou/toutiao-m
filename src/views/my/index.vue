@@ -129,7 +129,6 @@ export default {
         this.$store.commit('setUser', null)
       }).catch(() => {
         // 取消执行这里
-        console.log('已取消登录')
       })
     },
 
