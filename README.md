@@ -1,6 +1,6 @@
 # Vue.js 移动端项目——黑马头条
 
-## 扫码预览
+## 扫码体验
 
 ![](./public/project-preview.png)
 
