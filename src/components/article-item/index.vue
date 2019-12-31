@@ -64,6 +64,8 @@
 </template>
 
 <script>
+import { random } from 'lodash'
+
 export default {
   name: 'ArticleInfo',
   components: {},
@@ -90,7 +92,8 @@ export default {
       })
     },
     getPlaceholderImg () {
-      return `http://lorempixel.com/220/146/?${Math.random()}`
+      return `http://lipengzhou.gitee.io/web-material/cover/${random(1, 100)}.jpeg`
+      // return `http://lorempixel.com/220/146/?${Math.random()}`
     }
   }
 }
