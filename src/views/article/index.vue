@@ -188,6 +188,7 @@ export default {
 .article-container {
   height: 100%;
   overflow: scroll;
+  background: #fff;
 }
 
 .detail {

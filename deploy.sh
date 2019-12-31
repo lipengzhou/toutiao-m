@@ -1,7 +1,6 @@
 echo "Depoy start..."
 
 cd dist
-rm -rf .git
 git init
 git add .
 git commit -m "Published"
