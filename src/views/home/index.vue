@@ -44,10 +44,15 @@
         <van-icon
           name="cross"
           slot="left"
+          size="20"
           @click="isChannelEditShow = false"
         />
       </van-nav-bar>
-      <channel-edit :user-channels="channels" />
+      <channel-edit
+        :user-channels="channels"
+        v-model="active"
+        @close="isChannelEditShow = false"
+      />
     </van-popup>
     <!-- /频道编辑弹窗 -->
   </div>

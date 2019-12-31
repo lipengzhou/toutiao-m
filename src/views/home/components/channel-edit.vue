@@ -1,44 +1,56 @@
 <template>
   <div class="channel-container">
     <!-- 我的频道 -->
-    <van-cell title="我的频道" :border="false">
+    <van-cell :border="false">
+      <div class="title-wrap" slot="title">
+        <span class="title">我的频道</span>
+        <span class="tip">点击进入频道</span>
+      </div>
       <van-button
         type="danger"
         size="mini"
+        round
         @click="isEdit = !isEdit"
+        color="#e5615b"
       >{{ isEdit ? '完成' : '编辑' }}</van-button>
     </van-cell>
-    <van-grid :gutter="10">
+    <van-grid :gutter="10" clickable>
       <!--
         所有的 **组件**，如果没有内容，都可以写单标签结束或者双标签结束
         原生的 HTML 标签，你怎么学的你就怎么写
       -->
       <van-grid-item
+        class="channel-item"
         v-for="(channel, index) in userChannels"
         :key="channel.id"
-        :text="channel.name"
         @click="onChannelActiveOrDelete(channel, index)"
       >
+        <span class="text" :class="{ active: value === index }">{{ channel.name }}</span>
         <van-icon
-          class="close-icon"
-          slot="icon"
-          name="close"
-          size="20"
           v-show="isEdit && channel.name !== '推荐'"
+          class="close-icon"
+          name="close"
         />
       </van-grid-item>
     </van-grid>
     <!-- /我的频道 -->
 
     <!-- 推荐频道 -->
-    <van-cell title="推荐频道" :border="false" />
-    <van-grid :gutter="10">
+    <van-cell :border="false">
+      <div class="title-wrap" slot="title">
+        <span class="title">推荐频道</span>
+        <span class="tip">点击添加频道</span>
+      </div>
+    </van-cell>
+    <van-grid :gutter="10" clickable>
       <van-grid-item
+        class="channel-item"
         v-for="channel in recommendChannels"
         :key="channel.id"
-        :text="channel.name"
         @click="onChannelAdd(channel)"
-      />
+      >
+        <span class="text">{{ channel.name }}</span>
+      </van-grid-item>
     </van-grid>
     <!-- /推荐频道 -->
   </div>
@@ -49,12 +61,16 @@ import { getAllChannels } from '@/api/channel'
 import { setItem } from '@/utils/storage'
 
 export default {
-  name: '',
+  name: 'ChannelEdit',
   components: {},
   props: {
     userChannels: {
       type: Array,
       required: true
+    },
+    value: {
+      type: Number,
+      default: 0
     }
   },
   data () {
@@ -89,8 +105,8 @@ export default {
     }
   },
   watch: {
-    channels () {
-      setItem('channels', this.channels)
+    userChannels () {
+      setItem('channels', this.userChannels)
     }
   },
   created () {
@@ -104,36 +120,49 @@ export default {
         this.userChannels.splice(index, 1)
       } else {
         // 非编辑状态，执行切换频道
-        this.active = index
-        this.isChannelShow = false
-        // setItem('channels', this.channels)
+        this.$emit('input', index)
+        this.$emit('close')
       }
     },
 
     onChannelAdd (channel) {
-      // 将点击的频道项添加到我的频道列表中
       this.userChannels.push(channel)
-      // setItem('channels', this.channels)
     },
 
     async loadAllChannels () {
-      const res = await getAllChannels()
-      const allChannels = res.data.data.channels
-      allChannels.forEach(channel => {
-        channel.articles = [] // 频道的文章列表
-        channel.finished = false // 频道的加载结束状态
-        channel.timestamp = null // 用于获取频道下一页数据的时间戳
-      })
-      this.allChannels = allChannels
+      const { data } = await getAllChannels()
+      this.allChannels = data.data.channels
     }
   }
 }
 </script>
 
-<style scoped>
-::v-deep .van-grid-item__icon-wrapper {
-  position: absolute;
-  top: -12px;
-  right: -7px;
+<style scoped lang="less">
+.title-wrap {
+  .title {
+    margin-right: 10px;
+  }
+  .tip {
+    font-size: 12px;
+    color: #ccc;
+  }
+}
+.channel-item {
+  ::v-deep .van-grid-item__content {
+    background: #f4f5f6;
+  }
+  .text {
+    font-size: 14px;
+    color: #222;
+  }
+  .active {
+    color: #e5615b;
+  }
+  .close-icon {
+    font-size: 15px;
+    position: absolute;
+    right: -3px;
+    top: -4px;
+  }
 }
 </style>
