@@ -78,7 +78,7 @@
       <van-cell title="小智同学" is-link @click="$router.push('/chat')" />
     </van-cell-group>
 
-    <van-cell-group>
+    <van-cell-group v-if="$store.state.user">
       <van-cell
         style="text-align: center;"
         title="退出登录"
