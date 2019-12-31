@@ -7,7 +7,7 @@
     <!--
       标签栏支持路由模式，用于搭配vue-router使用。路由模式下会匹配页面路径和标签的to属性，并自动选中对应的标签
      -->
-    <van-tabbar v-model="active" route>
+    <van-tabbar class="tabbar" v-model="active" route>
       <van-tabbar-item icon="home-o" to="/">
         <span>首页</span>
         <van-icon
@@ -65,4 +65,8 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.tabbar {
+  background: #f6f6f6;
+}
+</style>
