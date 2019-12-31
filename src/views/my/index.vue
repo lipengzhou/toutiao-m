@@ -108,7 +108,6 @@ export default {
     }
   },
   created () {
-    console.log('my created')
     if (this.$store.state.user) {
       this.loadUser()
     }
