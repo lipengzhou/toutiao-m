@@ -1,7 +1,8 @@
 module.exports = {
-  publicPath: process.env.NODE_ENV === 'production'
-    ? '/topline-mobile-preview/'
-    : '/',
+  publicPath: '/',
+  // publicPath: process.env.NODE_ENV === 'production'
+  //   ? '/topline-mobile-preview/'
+  //   : '/',
   devServer: {
     port: 8081
   },
