@@ -2,7 +2,7 @@
 
 ## 扫码体验
 
-![](./public/project-preview.png)
+![](./docs/assets/project-preview.png)
 
 ## 功能列表
 
