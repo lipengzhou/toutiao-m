@@ -43,7 +43,7 @@
         :article="article"
         :comment-count="commentCount"
         @click-write="isPostCommentShow = true"
-        @click-comment="onClickComment"
+        @click-comment="onCommentClick"
       />
       <!-- /底部区域 -->
     </template>
@@ -173,7 +173,7 @@ export default {
       })
     },
 
-    onClickComment () {
+    onCommentClick () {
       // 让页面滚动到评论区
       const articleContainer = this.$refs['article-container']
       const commentAreaTip = this.$refs['comment-area-tip']

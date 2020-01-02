@@ -53,7 +53,7 @@ export default {
   },
   props: {
     userId: {
-      type: [String, Number],
+      type: [String, Number, Object],
       required: true
     }
   },

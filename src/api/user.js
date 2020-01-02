@@ -112,3 +112,17 @@ export function getUserById (userId) {
     url: `/app/v1_0/users/${userId}`
   })
 }
+
+/**
+ * 获取用户的关注列表
+ */
+export function getFollowersByUser (userId, params) {
+  return request({
+    method: 'GET',
+    url: '/app/v1_0/user/followers',
+    params,
+    data: {
+      target: userId.toString()
+    }
+  })
+}

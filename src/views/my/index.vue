@@ -28,7 +28,7 @@
           <span class="count">{{ user.art_count }}</span>
           <span class="text">头条</span>
         </van-grid-item>
-        <van-grid-item>
+        <van-grid-item :to="`/${user.id}/followers`">
           <span class="count">{{ user.follow_count }}</span>
           <span class="text">关注</span>
         </van-grid-item>

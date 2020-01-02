@@ -37,8 +37,7 @@ export default {
     }
   },
   computed: {},
-  watch: {
-  },
+  watch: {},
   created () {},
   methods: {
     async onLoad () {
@@ -49,23 +48,18 @@ export default {
       })
 
       // 2. 将数据添加到列表中
-      const { results } = data.data
+      const { results, total_count: totalCount } = data.data
       this.value.push(...results)
 
       // 更新总数量
-      this.$emit('update:total-count', data.data.total_count)
+      this.$emit('update:total-count', totalCount)
 
       // 3. 停止 loading
       this.loading = false
 
       // 4. 判断是否还有数据
       if (results.length) {
-        const { last_id: lastId } = data.data
-        if (lastId) {
-          this.page = lastId
-        } else {
-          this.page = (this.page || 1) + 1
-        }
+        this.page++
       } else {
         this.finished = true
       }
@@ -74,4 +68,8 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+body {
+  background: #fff;
+}
+</style>

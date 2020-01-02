@@ -87,7 +87,18 @@ const routes = [
     path: '/my-article/:type?',
     component: () => import('@/views/my-article'),
     props: true
+  },
+  {
+    name: 'followers',
+    path: '/:userId/followers',
+    component: () => import('@/views/followers'),
+    props: true
   }
+  // {
+  //   name: 'following',
+  //   path: '/:user/following',
+  //   component: () => import('@/views/following')
+  // }
 ]
 
 const router = new VueRouter({
