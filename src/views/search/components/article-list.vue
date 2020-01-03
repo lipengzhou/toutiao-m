@@ -9,6 +9,12 @@
       v-for="item in list"
       :key="item.art_id.toString()"
       :title="item.title"
+      @click="$router.push({
+        name: 'article',
+        params: {
+          articleId: item.art_id.toString()
+        }
+      })"
     />
   </van-list>
 </template>
@@ -22,7 +28,7 @@ export default {
   props: {
     q: {
       type: String,
-      default: ''
+      required: true
     }
   },
   data () {
