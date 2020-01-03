@@ -20,7 +20,7 @@
         <van-button
           round
           size="mini"
-          @click="$router.push('/profile')"
+          @click="$router.push('/user/profile')"
         >编辑资料</van-button>
       </div>
       <van-grid class="data-info" :border="false">
@@ -28,7 +28,7 @@
           <span class="count">{{ user.art_count }}</span>
           <span class="text">头条</span>
         </van-grid-item>
-        <van-grid-item :to="`/${user.id}/followers`">
+        <van-grid-item :to="`/user/${user.id}/followers`">
           <span class="count">{{ user.follow_count }}</span>
           <span class="text">关注</span>
         </van-grid-item>
@@ -75,7 +75,7 @@
     <van-cell-group :border="false">
       <van-cell title="消息通知" is-link />
       <!-- <van-cell title="实名认证" is-link /> -->
-      <van-cell title="小智同学" is-link @click="$router.push('/chat')" />
+      <van-cell title="小智同学" is-link @click="$router.push('/user/chat')" />
     </van-cell-group>
 
     <van-cell-group v-if="$store.state.user">

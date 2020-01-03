@@ -1,104 +1,84 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-const Login = () => import('@/views/login')
-const TabBar = () => import('@/views/tabbar')
-const Home = () => import('@/views/home')
-const Search = () => import('@/views/search')
-const SearchResult = () => import('@/views/search-result')
-const Article = () => import('@/views/article')
-const My = () => import('@/views/my')
-const Profile = () => import('@/views/profile')
-const Chat = () => import('@/views/chat')
-
 Vue.use(VueRouter)
 
-// 配置路由表
 const routes = [
-  {
+  { // 登录
     name: 'login',
     path: '/login',
-    component: Login
+    component: () => import('@/views/login')
   },
-  {
-    // 给拥有默认子路由的路由起名字没有意义，会受到Vue警告
-    // name: 'tabbar',
+  { // 底部标签栏
     path: '/',
-    component: TabBar,
+    component: () => import('@/views/tab-bar'),
     children: [
-      {
+      { // 首页
         name: 'home',
         path: '', // 默认子路由
-        component: Home
+        component: () => import('@/views/home')
       },
-      {
+      { // 我的
         name: 'my',
         path: '/my',
-        component: My
+        component: () => import('@/views/my')
       },
-      {
+      { // 问答
         name: 'qa',
         path: '/qa',
         component: () => import('@/views/qa')
       },
-      {
+      { // 视频
         name: 'video',
         path: '/video',
         component: () => import('@/views/video')
       }
     ]
   },
-  {
+  { // 搜索
     name: 'search',
     path: '/search',
-    component: Search
+    component: () => import('@/views/search')
   },
-  {
-    name: 'search-result',
-    path: '/search/:q',
-    component: SearchResult
-  },
-  {
-    // 给路由起一个名字，必须唯一
-    // 建议：无论你是否使用到路由 name 的优势，都建议给它起个名字
+  { // 文章详情
     name: 'article',
     path: '/article/:articleId',
-    component: Article,
+    component: () => import('@/views/article'),
     props: true
   },
-  {
-    name: 'profile',
-    path: '/profile',
-    component: Profile
+  { // 用户资料
+    name: 'user-profile',
+    path: '/user/profile',
+    component: () => import('@/views/user-profile')
   },
-  {
-    name: 'chat',
-    path: '/chat',
-    component: Chat
+  { // 小智同学
+    name: 'user-chat',
+    path: '/user/chat',
+    component: () => import('@/views/user-chat')
   },
-  {
+  { // 用户收藏
+    name: 'user-followers',
+    path: '/user/:userId/followers',
+    component: () => import('@/views/user-followers'),
+    props: true
+  },
+  { // 用户粉丝
+    name: 'user-following',
+    path: '/user/:userId/following',
+    component: () => import('@/views/user-following')
+  },
+  { // 用户主页
     name: 'user',
     path: '/user/:userId',
     component: () => import('@/views/user'),
     props: true
   },
-  {
+  { // 我的作品、收藏、历史
     name: 'my-article',
     path: '/my-article/:type?',
     component: () => import('@/views/my-article'),
     props: true
-  },
-  {
-    name: 'followers',
-    path: '/:userId/followers',
-    component: () => import('@/views/followers'),
-    props: true
   }
-  // {
-  //   name: 'following',
-  //   path: '/:user/following',
-  //   component: () => import('@/views/following')
-  // }
 ]
 
 const router = new VueRouter({

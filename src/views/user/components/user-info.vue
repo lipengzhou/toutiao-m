@@ -41,7 +41,7 @@
             v-else
             type="default"
             size="small"
-            @click="$router.push('/profile')"
+            @click="$router.push('/user/profile')"
           >编辑资料</van-button>
         </div>
       </div>
