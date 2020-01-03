@@ -27,15 +27,21 @@
             <div class="text">获赞</div>
           </div>
         </div>
-        <div>
+        <div class="action">
           <!--
             展示条件：如果没有登录 || 当前页面用户非登录用户
           -->
-          <follow-user
-            v-if="!sessionUser || user.id !== sessionUser.id"
-            v-model="user.is_following"
-            :user-id="user.id"
-          />
+          <template v-if="!sessionUser || user.id !== sessionUser.id">
+            <van-button
+              type="primary"
+              size="small"
+              @click="$router.push('/user/chat')"
+            >私信</van-button>
+            <follow-user
+              v-model="user.is_following"
+              :user-id="user.id"
+            />
+          </template>
           <!-- 否则显示编辑资料 -->
           <van-button
             v-else
@@ -121,8 +127,12 @@ export default {
         display: flex;
         justify-content: space-between;
       }
-      .van-button {
-        width: 50%;
+      .action {
+        display: flex;
+        justify-content: space-between;
+        .van-button {
+          width: 45%;
+        }
       }
     }
   }

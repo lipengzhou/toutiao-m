@@ -20,7 +20,7 @@ export default {
       type: Boolean
     },
     userId: {
-      type: [Number, String],
+      type: [Number, String, Object],
       required: true
     }
   },
