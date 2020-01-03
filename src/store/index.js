@@ -9,8 +9,9 @@ export default new Vuex.Store({
   state: {
     // 登录用户，一个对象，包含 token 信息
     user: getItem('user'),
-    keepAlive: ['TabBar']
+    cachedPages: ['TabBar']
   },
+
   mutations: {
     setUser (state, data) {
       state.user = data
@@ -21,6 +22,17 @@ export default new Vuex.Store({
 
     setKeepAlive (state, data) {
       state.keepAlive = data
+    },
+
+    removeCachePage (state, pageName) {
+      const index = state.cachedPages.indexOf(pageName)
+      if (index !== -1) {
+        state.cachedPages.splice(index, 1)
+      }
+    },
+
+    addCachePage (state, pageName) {
+      state.cachedPages.push(pageName)
     }
   },
   actions: {

@@ -7,7 +7,7 @@
       组件缓存之后，生命周期不再执行了
       如果不需要某些组件缓存，可以指定 include 或者 exclude 来包含或者排除
      -->
-    <keep-alive :include="$store.state.keepAlive">
+    <keep-alive :include="$store.state.cachedPages">
       <router-view />
     </keep-alive>
   </div>
