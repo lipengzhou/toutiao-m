@@ -2,7 +2,7 @@
 
 ## 扫码体验
 
-![](./docs/assets/project-preview.png)
+![project-host-qrcode](./assets/project-host-qrcode.png)
 
 ## 功能列表
 
