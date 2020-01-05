@@ -53,7 +53,7 @@
 
 ## 学习文档
 
-[http://topline.m.lipengzhou.com/cookbook](http://topline.m.lipengzhou.com/cookbook)
+<a target="_blank" href="http://topline.m.lipengzhou.com/cookbook/">http://topline.m.lipengzhou.com/cookbook/</a>
 
 ## 本地开发
 
