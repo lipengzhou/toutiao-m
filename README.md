@@ -62,7 +62,7 @@
 
 ```sh
 # 下载源码
-git clone https://gitee.com/lipengzhou/topline-mobile-preview.git
+git clone https://github.com/lipengzhou/topline-m.git
 
 # 安装依赖
 # 或者 npm install
