@@ -2,7 +2,14 @@
 
 ## 扫码体验
 
-![project-host-qrcode](./assets/project-host-qrcode.png)
+![project-host-qrcode](./public/project-host-qrcode.png)
+
+## 相关资源
+
+- GitHub 仓库：https://github.com/lipengzhou/topline-m
+- 学习笔记：http://topline.m.lipengzhou.com/cookbook/
+- 接口文档：http://topline.m.lipengzhou.com/api.html
+- 在线预览：http://topline.m.lipengzhou.com/
 
 ## 功能列表
 
@@ -55,7 +62,7 @@
 
 ```sh
 # 下载源码
-git clone https://gitee.com/lipengzhou/topline-mobile-preview.git
+git clone https://github.com/lipengzhou/topline-m.git
 
 # 安装依赖
 # 或者 npm install
