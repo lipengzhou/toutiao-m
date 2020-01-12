@@ -1,9 +1,17 @@
-export const getItem = name => {
-  return JSON.parse(window.localStorage.getItem(name))
+export const setItem = (name, value) => {
+  if (typeof value === 'object') {
+    value = JSON.stringify(value)
+  }
+  window.localStorage.setItem(name, value)
 }
 
-export const setItem = (name, value) => {
-  window.localStorage.setItem(name, JSON.stringify(value))
+export const getItem = name => {
+  const data = window.localStorage.getItem(name)
+  try {
+    return JSON.parse(data)
+  } catch (err) {
+    return data
+  }
 }
 
 export const removeItem = name => {
