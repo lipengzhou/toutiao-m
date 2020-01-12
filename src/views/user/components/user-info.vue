@@ -101,6 +101,7 @@ export default {
   padding: 12px;
   background-color: #fff;
   margin-bottom: 10px;
+  font-size: 14px;
   >.row1 {
     display: flex;
     justify-content: space-between;

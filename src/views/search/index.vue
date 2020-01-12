@@ -1,68 +1,65 @@
 <template>
   <div class="search-container">
     <!-- 搜索框 -->
-    <form action="/">
+    <form class="fixed" action="/">
       <van-search
         v-model.trim="searchText"
         show-action
         placeholder="请输入搜索关键词"
-        @click="onSearch(searchText)"
-        @input="onSearchInput"
+        @search="onSearch(searchText)"
         @focus="isResultShow = false"
-      >
-        <div class="cancel" slot="action" @click="$router.back()">取消</div>
-      </van-search>
+        @input="onSearchInput"
+        @cancel="$router.back()"
+      />
     </form>
     <!-- /搜索框 -->
 
-    <template v-if="!isResultShow">
-      <!-- 联想建议 -->
-      <van-cell-group v-show="searchText">
-        <van-cell
-          icon="search"
-          :key="item"
-          v-for="item in suggestions"
-          @click="onSearch(item)"
-        >
-          <!-- 我们要把 item 处理成带有高亮的字符串 -->
-          <!-- 过滤器：专门用于文本格式化，但是它只能用在 {{}} 和 v-bind 中 -->
-          <div slot="title" v-html="highlight(item)"></div>
-        </van-cell>
-      </van-cell-group>
-      <!-- /联想建议 -->
-
-      <!-- 搜索历史记录 -->
-      <van-cell-group v-show="searchHistories.length && !searchText">
-        <van-cell title="历史记录">
-          <div v-show="isDeleteShow">
-            <span @click="searchHistories = []">全部删除</span>&nbsp;&nbsp;
-            <span @click="isDeleteShow = false">完成</span>
-          </div>
-          <van-icon
-            v-show="!isDeleteShow"
-            name="delete"
-            @click="isDeleteShow = true"
-          />
-        </van-cell>
-        <van-cell
-          :title="item"
-          :key="item"
-          v-for="(item, index) in searchHistories"
-          @click="onSearch(item)"
-        >
-          <van-icon
-            v-show="isDeleteShow"
-            name="close"
-            @click.stop="searchHistories.splice(index, 1)"
-          />
-        </van-cell>
-      </van-cell-group>
-      <!-- /搜索历史记录 -->
-    </template>
-
     <!-- 搜索结果 -->
-    <article-list v-else q="searchText" />
+    <article-list v-if="isResultShow" q="searchText" />
     <!-- /搜索结果 -->
+
+    <!-- 联想建议 -->
+    <van-cell-group v-else-if="searchText">
+      <van-cell
+        icon="search"
+        :key="item"
+        v-for="item in suggestions"
+        @click="onSearch(item)"
+      >
+        <!-- 我们要把 item 处理成带有高亮的字符串 -->
+        <!-- 过滤器：专门用于文本格式化，但是它只能用在 {{}} 和 v-bind 中 -->
+        <div slot="title" v-html="highlight(item)"></div>
+      </van-cell>
+    </van-cell-group>
+    <!-- /联想建议 -->
+
+    <!-- 搜索历史记录 -->
+    <van-cell-group v-else>
+      <van-cell title="历史记录">
+        <div v-show="isDeleteShow">
+          <span @click="searchHistories = []">全部删除</span>&nbsp;&nbsp;
+          <span @click="isDeleteShow = false">完成</span>
+        </div>
+        <van-icon
+          v-show="!isDeleteShow"
+          name="delete"
+          @click="isDeleteShow = true"
+        />
+      </van-cell>
+      <van-cell
+        :title="item"
+        :key="item"
+        v-for="(item, index) in searchHistories"
+        @click="onSearch(item)"
+      >
+        <van-icon
+          v-show="isDeleteShow"
+          name="close"
+          @click.stop="searchHistories.splice(index, 1)"
+        />
+      </van-cell>
+    </van-cell-group>
+    <!-- /搜索历史记录 -->
   </div>
 </template>
 
@@ -146,11 +143,14 @@ export default {
 </script>
 
 <style scoped lang="less">
-@import "~@/styles/variables.less";
-
 .search-container {
-  .cancel {
-    color: @color-primary;
+  padding-top: 54px;
+  .fixed {
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    z-index: 1;
   }
 }
 </style>
