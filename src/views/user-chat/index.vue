@@ -14,7 +14,6 @@
     <div class="message-list" ref="message-list">
       <div
         class="message-item"
-        :class="{ reverse: item.isMe }"
         v-for="(item, index) in messages"
         :key="index"
       >
@@ -146,6 +145,7 @@ export default {
     overflow-y: scroll;
     .message-item {
       display: flex;
+      flex-flow: row wrap;
       align-items: center;
       padding: 10px;
       .title {
