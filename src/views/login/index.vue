@@ -104,12 +104,10 @@ export default {
       })
 
       try {
-        const res = await login(this.user)
+        const { data } = await login(this.user)
 
         // res.data.data => { token: 'xxx', refresh_token: 'xxx' }
-        this.$store.commit('setUser', res.data.data)
-
-        this.$store.dispatch('updateProfile')
+        this.$store.commit('setUser', data.data)
 
         // 提示 success 或者 fail 的时候，会先把其它的 toast 先清除
         this.$toast.success('登录成功')

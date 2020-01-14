@@ -20,7 +20,7 @@
     </div>
     <!-- 如果没登录或者当前文章作者不是当前登录用户 -->
     <follow-user
-      v-if="!user || article.aut_id !== user.id"
+      v-if="!user || article.aut_id !== user.user_id"
       v-model="article.is_followed"
       :user-id="article.aut_id"
       round

@@ -31,7 +31,7 @@
           <!--
             展示条件：如果没有登录 || 当前页面用户非登录用户
           -->
-          <template v-if="!sessionUser || user.id !== sessionUser.id">
+          <template v-if="!sessionUser || user.id !== sessionUser.user_id">
             <van-button
               type="primary"
               size="small"

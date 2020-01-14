@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import { setItem, getItem } from '@/utils/storage'
-import { getProfile } from '@/api/user'
+// import decodeJwt from '@/utils/decode-jwt'
+import decodeJwt from 'jwt-decode'
 
 Vue.use(Vuex)
 
@@ -14,6 +15,11 @@ export default new Vuex.Store({
 
   mutations: {
     setUser (state, data) {
+      // 解析 JWT 中的数据（需要使用用户ID）
+      if (data && data.token) {
+        Object.assign(data, decodeJwt(data.token))
+      }
+
       state.user = data
 
       // 为了防止刷新丢失 state 中的 user 状态，我们把它放到本地存储
@@ -35,15 +41,5 @@ export default new Vuex.Store({
       state.cachedPages.push(pageName)
     }
   },
-  actions: {
-    async updateProfile ({ state, commit }) {
-      if (state.user) {
-        const { data } = await getProfile()
-        commit('setUser', {
-          ...state.user,
-          ...data.data
-        })
-      }
-    }
-  }
+  actions: {}
 })

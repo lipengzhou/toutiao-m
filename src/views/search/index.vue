@@ -3,8 +3,8 @@
     <!-- 搜索栏 -->
     <form class="search-form" action="/">
       <van-search
-        background="#3296fa"
         v-model="searchText"
+        background="#3296fa"
         placeholder="请输入搜索关键词"
         show-action
         @search="onSearch"
