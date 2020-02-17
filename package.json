@@ -34,7 +34,6 @@
     "@vue/cli-service": "^4.1.0",
     "@vue/eslint-config-standard": "^4.0.0",
     "babel-eslint": "^10.0.3",
-    "babel-plugin-import": "^1.13.0",
     "babel-plugin-transform-remove-console": "^6.9.4",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",

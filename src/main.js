@@ -4,10 +4,13 @@ import router from './router'
 import store from './store'
 import dateTime from './utils/date-time'
 import validation from './utils/validation'
+import Vant, { Lazyload } from 'vant'
+import 'vant/lib/index.css'
 import 'amfe-flexible'
-import './utils/register-vant.js'
 import './styles/index.less'
 
+Vue.use(Vant)
+Vue.use(Lazyload)
 Vue.use(dateTime)
 Vue.use(validation)
 

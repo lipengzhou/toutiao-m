@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import { setItem, getItem } from '@/utils/storage'
-// import decodeJwt from '@/utils/decode-jwt'
 import decodeJwt from 'jwt-decode'
 
 Vue.use(Vuex)
@@ -17,7 +16,8 @@ export default new Vuex.Store({
     setUser (state, data) {
       // 解析 JWT 中的数据（需要使用用户ID）
       if (data && data.token) {
-        Object.assign(data, decodeJwt(data.token))
+        const user = decodeJwt(data.token)
+        data.user_id = user.user_id
       }
 
       state.user = data

@@ -92,14 +92,8 @@ export default {
         channels = localChannels
       } else {
         // 如果没有，则请求获取线上推荐的频道列表
-        const res = await getUserChannels()
-        const onLineChannels = res.data.data.channels
-        onLineChannels.forEach(channel => {
-          channel.articles = [] // 频道的文章列表
-          channel.finished = false // 频道的加载结束状态
-          channel.timestamp = null // 用于获取频道下一页数据的时间戳
-        })
-        channels = onLineChannels
+        const { data } = await getUserChannels()
+        channels = data.data.channels
       }
 
       this.channels = channels

@@ -4,6 +4,7 @@
       class="page-navbar"
       title="个人信息"
       left-arrow
+      @click-left="$router.replace('/my')"
     />
     <van-cell-group>
       <van-cell title="头像" is-link @click="onShowFile">
@@ -18,7 +19,7 @@
         title="昵称"
         :value="user.name"
         is-link
-        @click="isEditNameShow = true"
+        @click="onEditNameShow"
       />
       <van-cell
         title="性别"
@@ -34,7 +35,7 @@
       />
     </van-cell-group>
 
-    <!-- 修改介绍 -->
+    <!-- 修改昵称 -->
     <van-popup
       class="intro-popup"
       v-model="isEditNameShow"
@@ -51,18 +52,17 @@
       </van-nav-bar>
       <div class="intro-field-wrap">
         <van-field
-          :value="user.name"
-          @input="inputName = $event"
+          v-model="inputName"
           rows="2"
           autosize
           type="textarea"
-          maxlength="20"
+          maxlength="7"
           placeholder="请输入昵称"
           show-word-limit
         />
       </div>
     </van-popup>
-    <!-- /修改介绍 -->
+    <!-- /修改昵称 -->
 
     <!-- 修改性别 -->
     <van-action-sheet
@@ -88,6 +88,7 @@
     </van-popup>
     <!-- /修改生日 -->
 
+    <!-- 上传头像预览 -->
     <van-image-preview
       v-model="isPreviewPhotoShow"
       :images="previewImages"
@@ -96,8 +97,10 @@
         slot="cover"
         left-text="取消"
         right-text="确定"
+        @click-right="onUpdatePhoto"
       />
     </van-image-preview>
+    <!-- /上传头像预览 -->
   </div>
 </template>
 
@@ -105,7 +108,7 @@
 import {
   getProfile,
   updateUserProfile,
-  getSelf
+  updateUserPhoto
 } from '@/api/user'
 import dayjs from 'dayjs'
 
@@ -140,9 +143,14 @@ export default {
   },
   methods: {
     async loadUserProfile () {
-      const [res1, res2] = await Promise.all([getProfile(), getSelf()])
-      this.user = Object.assign(res1.data.data, res2.data.data)
+      const { data } = await getProfile()
+      this.user = data.data
       this.currentDate = new Date(this.user.birthday)
+    },
+
+    onEditNameShow () {
+      this.inputName = this.user.name
+      this.isEditNameShow = true
     },
 
     onShowFile () {
@@ -187,8 +195,12 @@ export default {
 
         // 关闭弹层
         this.isEditNameShow = false
-      } catch (err) {
-        console.log(err)
+      } catch ({ response }) {
+        if (response.status === 400) {
+          this.$toast.fail('昵称必须在1-7个字符之间')
+        } else if (response.status === 409) {
+          this.$toast.fail('昵称已存在')
+        }
       }
     },
 
@@ -214,6 +226,34 @@ export default {
 
       // 关闭弹层
       this.isEditBirthdayShow = false
+    },
+
+    async onUpdatePhoto () {
+      this.$toast.loading({
+        duration: 0, // 持续时间，0表示持续展示不停止
+        forbidClick: true, // 是否禁止背景点击
+        message: '保存中...' // 提示消息
+      })
+
+      try {
+        // 构造包含文件的表单数据对象
+        const fd = new FormData()
+        const fileObj = this.file.files[0]
+        fd.append('photo', fileObj)
+
+        // 请求更新
+        await updateUserPhoto(fd)
+
+        // 更新视图
+        this.user.photo = URL.createObjectURL(fileObj)
+
+        // 关闭图片预览
+        this.isPreviewPhotoShow = false
+
+        this.$toast.success('保存成功')
+      } catch (err) {
+        this.$toast.success('保存失败')
+      }
     }
   }
 }

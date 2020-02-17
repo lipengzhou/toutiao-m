@@ -25,7 +25,7 @@
       <van-image
         fit="cover"
         class="cover-item"
-        :src="getPlaceholderImg()"
+        :src="img"
         v-for="(img, index) in article.cover.images"
         :key="index"
         lazy-load
@@ -56,7 +56,7 @@
     <van-image
       class="cover"
       fit="cover"
-      :src="getPlaceholderImg()"
+      :src="article.cover.images[0]"
       lazy-load
     />
   </div>
@@ -64,8 +64,6 @@
 </template>
 
 <script>
-import { random } from 'lodash'
-
 export default {
   name: 'ArticleInfo',
   components: {},
@@ -90,10 +88,6 @@ export default {
           articleId: this.article.art_id.toString()
         }
       })
-    },
-    getPlaceholderImg () {
-      return `http://lipengzhou.gitee.io/web-material/cover/${random(1, 100)}.jpeg`
-      // return `http://lorempixel.com/220/146/?${Math.random()}`
     }
   }
 }
