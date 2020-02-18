@@ -14,47 +14,42 @@
     <!-- 导航栏 -->
 
     <!-- 表单 -->
-    <ValidationObserver ref="form">
-      <ValidationProvider name="手机号" rules="required|mobile">
-        <van-field
-          v-model="user.mobile"
-          type="tel"
-          maxlength="11"
-          placeholder="请输入手机号"
+    <form action="">
+      <van-field
+        v-model="user.mobile"
+        type="tel"
+        maxlength="11"
+        placeholder="请输入手机号"
+      >
+        <van-icon slot="left-icon" class-prefix="icon" name="shouji"></van-icon>
+      </van-field>
+      <van-field
+        ref="codeField"
+        v-model="user.code"
+        type="tel"
+        maxlength="6"
+        placeholder="请输入验证码"
+      >
+        <van-icon slot="left-icon" class-prefix="icon" name="mima"></van-icon>
+        <van-button
+          slot="button"
+          size="small"
+          :type="isSending ? 'default' : 'primary'"
+          :disabled="isSending"
+          @click="onSendCode"
         >
-          <van-icon slot="left-icon" class-prefix="icon" name="shouji"></van-icon>
-        </van-field>
-      </ValidationProvider>
-
-      <ValidationProvider name="验证码" rules="required|code">
-        <van-field
-          ref="codeField"
-          v-model="user.code"
-          type="tel"
-          maxlength="6"
-          placeholder="请输入验证码"
-        >
-          <van-icon slot="left-icon" class-prefix="icon" name="mima"></van-icon>
-          <van-button
-            slot="button"
-            size="small"
-            :type="isSending ? 'default' : 'primary'"
-            :disabled="isSending"
-            @click="onSendCode"
-          >
-            <van-count-down
-              ref="countDown"
-              v-if="isSending"
-              :time="1000 * 60"
-              format="ss s"
-              :auto-start="false"
-              @finish="isSending = false"
-            />
-            <span v-else>获取验证码</span>
-          </van-button>
-        </van-field>
-      </ValidationProvider>
-    </ValidationObserver>
+          <van-count-down
+            ref="countDown"
+            v-if="isSending"
+            :time="1000 * 60"
+            format="ss s"
+            :auto-start="false"
+            @finish="isSending = false"
+          />
+          <span v-else>获取验证码</span>
+        </van-button>
+      </van-field>
+    </form>
     <!-- /表单 -->
 
     <!-- 登录按钮 -->
@@ -70,7 +65,6 @@
 
 <script>
 import { login, sendSmsCode } from '@/api/user'
-import { validate } from 'vee-validate'
 
 export default {
   name: 'LoginPage',
@@ -91,11 +85,11 @@ export default {
   created () {},
   methods: {
     async onLogin () {
-      // 表单验证
-      const isValid = await this.$validateForm(this.$refs.form)
-      if (!isValid) {
-        return
-      }
+      // TODO: 表单验证
+      // const isValid = await this.$validateForm(this.$refs.form)
+      // if (!isValid) {
+      //   return
+      // }
 
       this.$toast.loading({
         duration: 0, // 持续时间，0表示持续展示不停止
@@ -123,14 +117,14 @@ export default {
 
     async onSendCode () {
       const { mobile } = this.user
-      // 校验手机号码是否有效
-      const validateResult = await validate(mobile, 'required|mobile', {
-        name: '手机号码'
-      })
-      if (!validateResult.valid) {
-        this.$toast(validateResult.errors[0])
-        return
-      }
+      // TODO: 校验手机号码是否有效
+      // const validateResult = await validate(mobile, 'required|mobile', {
+      //   name: '手机号码'
+      // })
+      // if (!validateResult.valid) {
+      //   this.$toast(validateResult.errors[0])
+      //   return
+      // }
 
       // 显示倒计时
       this.isSending = true
