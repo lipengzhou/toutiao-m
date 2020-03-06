@@ -60,22 +60,18 @@
     <!-- /未登录 -->
 
     <!-- 其它 -->
-    <van-grid clickable :column-num="3">
-      <van-grid-item text="我的收藏" to="/my-article/collect">
+    <van-grid clickable :column-num="2">
+      <van-grid-item text="收藏" to="/my-article/collect">
         <van-icon slot="icon" name="star-o" color="#eb5253" />
       </van-grid-item>
-      <van-grid-item text="浏览历史" to="/my-article/history">
+      <van-grid-item text="历史" to="/my-article/history">
         <van-icon slot="icon" name="browsing-history-o" color="#ffa023" />
-      </van-grid-item>
-      <van-grid-item text="作品" to="/my-article">
-        <van-icon slot="icon" name="edit" color="#678eff" />
       </van-grid-item>
     </van-grid>
 
     <van-cell-group :border="false">
       <!-- <van-cell title="消息通知" is-link /> -->
-      <!-- <van-cell title="实名认证" is-link /> -->
-      <!-- <van-cell title="小智同学" is-link @click="$router.push('/user/chat')" /> -->
+      <van-cell title="小智同学" is-link @click="$router.push('/user/chat')" />
     </van-cell-group>
 
     <van-cell-group v-if="$store.state.user">

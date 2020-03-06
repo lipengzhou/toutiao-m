@@ -30,7 +30,6 @@
 import LoadingList from '@/components/loading-list'
 import ArticleItem from './components/article-item'
 import {
-  getUserArticles,
   getUserCollectArticles,
   getUserHistoryArticles
 } from '@/api/article'
@@ -57,10 +56,6 @@ export default {
         {
           title: '历史',
           fn: getUserHistoryArticles
-        },
-        {
-          title: '作品',
-          fn: getUserArticles
         }
       ]
     }

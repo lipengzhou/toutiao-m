@@ -9,6 +9,7 @@ import { Notify } from 'vant'
 
 // axios.create 方法：复制一个 axios
 const request = axios.create({
+  // baseURL: 'http://api-toutiao-web.itheima.net' // 基础路径
   baseURL: 'http://ttapi.research.itcast.cn/' // 基础路径
 })
 
@@ -41,20 +42,10 @@ request.interceptors.request.use(
 
 // 响应拦截器
 request.interceptors.response.use(
-  // 响应成功进入第1个函数
-  // 该函数的参数是响应对象
-  function (response) {
-    // Any status code that lie within the range of 2xx cause this function to trigger
-    // Do something with response data
+  response => {
     return response
   },
-  // 响应失败进入第2个函数，该函数的参数是错误对象
-  async function (error) {
-    // Any status codes that falls outside the range of 2xx cause this function to trigger
-    // Do something with response error
-    // 如果响应码是 401 ，则请求获取新的 token
-
-    // 响应拦截器中的 error 就是那个响应的错误对象
+  async error => {
     if (error.response && error.response.status === 401) {
       // 校验是否有 refresh_token
       const user = store.state.user
@@ -78,10 +69,9 @@ request.interceptors.response.use(
         })
 
         // 如果获取成功，则把新的 token 更新到容器中
-        console.log('刷新 token  成功', res)
         store.commit('setUser', {
-          token: res.data.data.token, // 最新获取的可用 token
-          refresh_token: user.refresh_token // 还是原来的 refresh_token
+          ...user,
+          token: res.data.data.token // 最新获取的可用 token
         })
 
         // 把之前失败的用户请求继续发出去
@@ -97,14 +87,17 @@ request.interceptors.response.use(
     } else if (error.response.status === 500) {
       Notify('服务端异常，请稍后重试')
     }
-
     return Promise.reject(error)
   }
 )
 
 function redirectLogin () {
-  // router.currentRoute 当前路由对象，和你在组件中访问的 this.$route 是同一个东西
-  router.push('/login?redirect=' + router.currentRoute.fullPath)
+  router.push({
+    name: 'login',
+    query: {
+      redirect: router.currentRoute.fullPath
+    }
+  })
 }
 
 export default request
