@@ -155,7 +155,7 @@ export default {
         word-wrap: break-word;
       }
       .title {
-        display: inline-block;
+        display: table;
         background: #e0effb;
         border-radius: 6px;
         font-size: 14px;

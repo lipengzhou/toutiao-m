@@ -23,7 +23,7 @@
       :name="article.attitude === 1 ? 'good-job' : 'good-job-o'"
       @click="onLike"
     />
-    <van-icon class="share-icon" name="share" />
+    <!-- <van-icon class="share-icon" name="share" /> -->
   </div>
 </template>
 
