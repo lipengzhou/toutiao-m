@@ -88,6 +88,7 @@
 
 <script>
 import { getSelf } from '@/api/user'
+import globalBus from '@/utils/global-bus'
 
 export default {
   name: 'MyPage',
@@ -107,6 +108,9 @@ export default {
     if (this.$store.state.user) {
       this.loadUser()
     }
+    globalBus.$on('user-update', () => {
+      this.loadUser()
+    })
   },
   methods: {
     onLogout () {

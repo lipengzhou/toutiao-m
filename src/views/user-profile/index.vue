@@ -111,6 +111,7 @@ import {
   updateUserPhoto
 } from '@/api/user'
 import dayjs from 'dayjs'
+import globalBus from '@/utils/global-bus'
 
 export default {
   name: 'UserProfile',
@@ -179,6 +180,7 @@ export default {
           [field]: value
         })
         this.$toast.success('保存成功')
+        globalBus.$emit('user-update')
       } catch (err) {
         this.$toast.success('保存失败')
         return Promise.reject(err)
@@ -251,6 +253,8 @@ export default {
         this.isPreviewPhotoShow = false
 
         this.$toast.success('保存成功')
+
+        globalBus.$emit('user-update')
       } catch (err) {
         this.$toast.success('保存失败')
       }

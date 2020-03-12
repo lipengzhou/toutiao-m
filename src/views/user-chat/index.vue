@@ -14,6 +14,7 @@
     <div class="message-list" ref="message-list">
       <div
         class="message-item"
+        :class="{ reverse: item.userId === user.user_id }"
         v-for="(item, index) in messages"
         :key="index"
       >
@@ -23,7 +24,9 @@
           fit="cover"
           :src="item.photo"
         />
-        <div class="title">{{ item.msg }}</div>
+        <div class="msg-wrap" style="flex: 1;">
+          <div class="title">{{ item.msg }}</div>
+        </div>
       </div>
     </div>
     <!-- /消息列表 -->
@@ -50,6 +53,7 @@
 <script>
 import io from 'socket.io-client'
 import { getItem, setItem } from '@/utils/storage'
+import { mapState } from 'vuex'
 
 export default {
   name: 'ChatPage',
@@ -59,6 +63,10 @@ export default {
       socket: null,
       messages: getItem('messages') || [] // 消息数据列表
     }
+  },
+
+  computed: {
+    ...mapState(['user'])
   },
 
   watch: {
@@ -77,8 +85,7 @@ export default {
     // socket.emit('message', '消息')
 
     socket.on('message', data => {
-      console.log('收到消息了', data)
-      data.photo = 'http://toutiao.meiduo.site/FhWyOsSDIAIlEZj6tTGvO2aTizha'
+      data.photo = 'http://toutiao.meiduo.site/FqHn7ps9v5I8esWXJNKH0asrSwcB'
       this.messages.push(data)
     })
   },
@@ -106,17 +113,12 @@ export default {
       // Body 要求我们传递一个对象
       const data = {
         msg: message,
-        timestamp: Date.now()
+        timestamp: Date.now(),
+        userId: this.user.user_id,
+        photo: 'http://toutiao.meiduo.site/FlOAkWHoU8lnYwU6eCEPN-dHINHl'
       }
       this.socket.emit('message', data)
-
-      // 把消息存储到数组列表中
-      data.isMe = true
-      // 我的头像
-      data.photo = 'https://img.yzcdn.cn/vant/cat.jpeg'
       this.messages.push(data)
-
-      // 清空文本框
       this.message = ''
     },
 
@@ -145,14 +147,20 @@ export default {
     overflow-y: scroll;
     .message-item {
       display: flex;
-      flex-flow: row wrap;
-      align-items: center;
+      flex-flow: row nowrap;
+      align-items: flex-start;
       padding: 10px;
+      .msg-wrap {
+        word-break: break-all;
+        word-wrap: break-word;
+      }
       .title {
-        background: #fff;
-        padding: 5px;
+        display: inline-block;
+        background: #e0effb;
         border-radius: 6px;
         font-size: 14px;
+        padding: 10px 10px;
+        margin-right: 45px;
       }
       .avatar {
         width: 40px;
@@ -162,8 +170,13 @@ export default {
     }
     .reverse {
       flex-direction: row-reverse;
-      .title {
-        margin-right: 5px;
+      .msg-wrap {
+        display: flex;
+        flex-direction: row-reverse;
+        .title {
+          margin-right: 5px;
+          margin-left: 45px;
+        }
       }
     }
   }
