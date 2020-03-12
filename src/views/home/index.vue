@@ -26,6 +26,7 @@
         <!-- /文章列表 -->
       </van-tab>
       <!-- 它默认会把你写的其它内容渲染到内容的底部 -->
+      <div slot="nav-right" class="van-tab" style="flex: 0 0 8%;"></div>
       <van-icon slot="nav-right" class="wap-nav" name="wap-nav" @click="isChannelEditShow = true" />
     </van-tabs>
     <!-- /频道列表 -->
