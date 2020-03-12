@@ -14,42 +14,41 @@
     <!-- 导航栏 -->
 
     <!-- 表单 -->
-    <form action="">
-      <van-field
-        v-model="user.mobile"
-        type="tel"
-        maxlength="11"
-        placeholder="请输入手机号"
+    <van-field
+      v-model="user.mobile"
+      type="tel"
+      maxlength="11"
+      placeholder="请输入手机号"
+      ref="mobile"
+    >
+      <van-icon slot="left-icon" class-prefix="icon" name="shouji"></van-icon>
+    </van-field>
+    <van-field
+      v-model="user.code"
+      type="tel"
+      maxlength="6"
+      placeholder="请输入验证码"
+      ref="code"
+    >
+      <van-icon slot="left-icon" class-prefix="icon" name="mima"></van-icon>
+      <van-button
+        slot="button"
+        size="small"
+        :type="isSending ? 'default' : 'primary'"
+        :disabled="isSending"
+        @click="onSendCode"
       >
-        <van-icon slot="left-icon" class-prefix="icon" name="shouji"></van-icon>
-      </van-field>
-      <van-field
-        ref="codeField"
-        v-model="user.code"
-        type="tel"
-        maxlength="6"
-        placeholder="请输入验证码"
-      >
-        <van-icon slot="left-icon" class-prefix="icon" name="mima"></van-icon>
-        <van-button
-          slot="button"
-          size="small"
-          :type="isSending ? 'default' : 'primary'"
-          :disabled="isSending"
-          @click="onSendCode"
-        >
-          <van-count-down
-            ref="countDown"
-            v-if="isSending"
-            :time="1000 * 60"
-            format="ss s"
-            :auto-start="false"
-            @finish="isSending = false"
-          />
-          <span v-else>获取验证码</span>
-        </van-button>
-      </van-field>
-    </form>
+        <van-count-down
+          ref="countDown"
+          v-if="isSending"
+          :time="1000 * 60"
+          format="ss s"
+          :auto-start="false"
+          @finish="isSending = false"
+        />
+        <span v-else>获取验证码</span>
+      </van-button>
+    </van-field>
     <!-- /表单 -->
 
     <!-- 登录按钮 -->
@@ -85,11 +84,9 @@ export default {
   created () {},
   methods: {
     async onLogin () {
-      // TODO: 表单验证
-      // const isValid = await this.$validateForm(this.$refs.form)
-      // if (!isValid) {
-      //   return
-      // }
+      if (!this.checkMobile() || !this.checkCode()) {
+        return
+      }
 
       this.$toast.loading({
         duration: 0, // 持续时间，0表示持续展示不停止
@@ -117,20 +114,15 @@ export default {
 
     async onSendCode () {
       const { mobile } = this.user
-      // TODO: 校验手机号码是否有效
-      // const validateResult = await validate(mobile, 'required|mobile', {
-      //   name: '手机号码'
-      // })
-      // if (!validateResult.valid) {
-      //   this.$toast(validateResult.errors[0])
-      //   return
-      // }
+      if (!this.checkMobile()) {
+        return
+      }
 
       // 显示倒计时
       this.isSending = true
 
       // 让验证码输入框聚焦
-      this.$refs['codeField'].focus()
+      this.$refs['code'].focus()
 
       // 开始倒计时
       this.$nextTick(() => {
@@ -141,8 +133,59 @@ export default {
       try {
         await sendSmsCode(mobile)
       } catch (err) {
-        console.log('发送失败', err)
+        let message = '发送失败，请稍后重试'
+        if (err.response.status === 429) {
+          message = '1分钟内只能发送1次，请稍后重试'
+        }
+        this.$toast({
+          message,
+          position: 'top'
+        })
+        // 关闭倒计时
+        this.isSending = false
       }
+    },
+
+    checkMobile () {
+      const { mobile } = this.user
+      if (!mobile) {
+        this.$toast({
+          message: '手机号码不能为空',
+          position: 'top'
+        })
+        this.$refs.mobile.focus()
+        return false
+      }
+      if (!/^1[3578]\d{9}$/.test(mobile)) {
+        this.$toast({
+          message: '手机号码格式错误',
+          position: 'top'
+        })
+        this.$refs.mobile.focus()
+        return false
+      }
+      return true
+    },
+
+    checkCode () {
+      const { code } = this.user
+      if (!code) {
+        this.$toast({
+          message: '验证码不能为空',
+          position: 'top'
+        })
+        this.$refs.code.focus()
+        return false
+      }
+      if (!/^\d{6}$/.test(code)) {
+        this.$toast({
+          message: '验证码格式错误',
+          position: 'top'
+        })
+        this.$refs.code.focus()
+        return false
+      }
+      return true
     }
   }
 }

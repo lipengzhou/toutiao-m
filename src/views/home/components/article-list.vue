@@ -1,18 +1,20 @@
 <template>
-  <van-pull-refresh v-model="refreshLoading" @refresh="onRefresh">
-    <van-list
-      v-model="loading"
-      :finished="finished"
-      finished-text="没有更多了"
-      @load="onLoad"
-    >
-      <article-item
-        :article="article"
-        v-for="(article, index) in list"
-        :key="index"
-      />
-    </van-list>
-  </van-pull-refresh>
+  <div class="article-list">
+    <van-pull-refresh v-model="refreshLoading" @refresh="onRefresh">
+      <van-list
+        v-model="loading"
+        :finished="finished"
+        finished-text="没有更多了"
+        @load="onLoad"
+      >
+        <article-item
+          :article="article"
+          v-for="(article, index) in list"
+          :key="index"
+        />
+      </van-list>
+    </van-pull-refresh>
+  </div>
 </template>
 
 <script>
@@ -95,4 +97,8 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.article-list {
+  min-height: 80vh;
+}
+</style>
