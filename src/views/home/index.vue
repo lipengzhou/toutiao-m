@@ -26,10 +26,7 @@
         <!-- /文章列表 -->
       </van-tab>
       <!-- 它默认会把你写的其它内容渲染到内容的底部 -->
-      <!-- <span>hello</span> -->
-      <div class="wap-nav" slot="nav-right" @click="isChannelEditShow = true">
-        <van-icon name="wap-nav" />
-      </div>
+      <van-icon slot="nav-right" class="wap-nav" name="wap-nav" @click="isChannelEditShow = true" />
     </van-tabs>
     <!-- /频道列表 -->
 
@@ -38,6 +35,9 @@
       v-model="isChannelEditShow"
       position="bottom"
       :style="{ height: '100%' }"
+      round
+      :overlay="false"
+      class="channel-edit-popup"
     >
       <van-nav-bar title="编辑频道">
         <van-icon
@@ -127,13 +127,26 @@ export default {
     }
   }
   .wap-nav {
-    position: sticky;
+    position: fixed;
     right: 0;
-    display: flex;
-    align-items: center;
     background-color: #fff;
     opacity: .8;
     font-size: 26px;
+    line-height: 43px;
+  }
+  /deep/ .van-tabs {
+    .van-tab {
+      border-right: 1px solid #edeff3;
+      border-bottom: 1px solid #edeff3;
+    }
+    .van-tabs__line {
+      width: 15px !important;
+      background-color: #3296fa;
+      bottom: 20px;
+    }
+  }
+  .channel-edit-popup {
+    border-radius: 10px 10px 0 0;
   }
 }
 </style>
