@@ -8,6 +8,7 @@
       </div>
       <van-button
         type="danger"
+        plain
         size="mini"
         round
         @click="isEdit = !isEdit"
@@ -141,6 +142,7 @@ export default {
 .title-wrap {
   .title {
     margin-right: 10px;
+    font-size: 16px;
   }
   .tip {
     font-size: 12px;
@@ -148,6 +150,7 @@ export default {
   }
 }
 .channel-item {
+  height: 43px;
   ::v-deep .van-grid-item__content {
     background: #f4f5f6;
   }

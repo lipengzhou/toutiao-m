@@ -37,8 +37,7 @@
     <van-popup
       v-model="isChannelEditShow"
       position="bottom"
-      :style="{ height: '95%' }"
-      round
+      :style="{ height: '100%' }"
     >
       <van-nav-bar title="编辑频道">
         <van-icon
