@@ -2,6 +2,7 @@
   <div class="article-list">
     <van-pull-refresh v-model="refreshLoading" @refresh="onRefresh">
       <van-list
+        :immediate-check="false"
         v-model="loading"
         :finished="finished"
         finished-text="没有更多了"
@@ -43,10 +44,13 @@ export default {
   },
   computed: {},
   watch: {},
-  created () {},
+  created () {
+    this.onLoad()
+  },
   mounted () {},
   methods: {
     async onLoad () {
+      this.loading = true
       // 1. 请求获取数据
       const { data } = await getArticles({
         channel_id: this.channel.id, // 频道 id

@@ -58,8 +58,9 @@
 </template>
 
 <script>
-import { getAllChannels } from '@/api/channel'
+import { getAllChannels, addChannel, deleteChannel } from '@/api/channel'
 import { setItem } from '@/utils/storage'
+import { mapState } from 'vuex'
 
 export default {
   name: 'ChannelEdit',
@@ -81,6 +82,7 @@ export default {
     }
   },
   computed: {
+    ...mapState(['user']),
     recommendChannels () {
       const arr = []
       // 遍历所有频道
@@ -105,11 +107,7 @@ export default {
       return arr
     }
   },
-  watch: {
-    userChannels () {
-      setItem('channels', this.userChannels)
-    }
-  },
+  watch: {},
   created () {
     this.loadAllChannels()
   },
@@ -118,7 +116,8 @@ export default {
     onChannelActiveOrDelete (channel, index) {
       if (this.isEdit && channel.name !== '推荐') {
         // 编辑状态，执行删除操作
-        this.userChannels.splice(index, 1)
+        // this.userChannels.splice(index, 1)
+        this.deleteChannel(channel, index)
       } else {
         // 非编辑状态，执行切换频道
         this.$emit('input', index)
@@ -126,8 +125,41 @@ export default {
       }
     },
 
-    onChannelAdd (channel) {
-      this.userChannels.push(channel)
+    async deleteChannel (channel, index) {
+      try {
+        if (this.user) {
+          // 已登录，删除线上数据
+          await deleteChannel(channel.id)
+          this.userChannels.splice(index, 1)
+        } else {
+          // 未登录，删除本地数据
+          this.userChannels.splice(index, 1)
+          setItem('channels', this.userChannels)
+        }
+      } catch (err) {
+        console.log(err)
+        this.$toast('操作失败，请稍后重试')
+      }
+    },
+
+    async onChannelAdd (channel) {
+      // 已登录，将数据存储到线上
+      try {
+        if (this.user) {
+          await addChannel({
+            id: channel.id,
+            seq: this.userChannels.length
+          })
+          this.userChannels.push(channel)
+        } else {
+          // 未登录，将数据存储到本地
+          this.userChannels.push(channel)
+          setItem('channels', this.userChannels)
+        }
+      } catch (err) {
+        console.log(err)
+        this.$toast('添加失败,请稍后重试')
+      }
     },
 
     async loadAllChannels () {

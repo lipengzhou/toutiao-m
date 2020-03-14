@@ -15,7 +15,7 @@
     <!-- /导航栏 -->
 
     <!-- 频道列表 -->
-    <van-tabs class="fixed-tabs" v-model="active" swipeable>
+    <van-tabs v-if="channels.length" class="fixed-tabs" v-model="active" swipeable>
       <van-tab
         :title="channel.name"
         v-for="channel in channels"
@@ -63,6 +63,7 @@ import { getUserChannels } from '@/api/user'
 import { getItem } from '@/utils/storage'
 import ArticleList from './components/article-list'
 import ChannelEdit from './components/channel-edit'
+import { mapState } from 'vuex'
 
 export default {
   name: 'HomePage',
@@ -78,24 +79,50 @@ export default {
       channels: []
     }
   },
-  computed: {},
-  watch: {},
+  computed: {
+    ...mapState(['user'])
+  },
+  watch: {
+    user () {
+      // 清空频道列表
+      this.channels = []
+
+      // 初始化激活标签
+      this.active = 0
+
+      // 等待视图更新 -> 重新加载频道列表
+      // 注意：文章列表组件必须关闭滚动检查手动 onLoad，否则更新频道列表无法触发自动加载文章列表数据
+      this.$nextTick(() => this.loadUserChannels())
+    }
+  },
+  activated () {
+    // 如果没有频道数据，则请求加载
+    // if (!this.channels.length) {
+    //   this.loadUserChannels()
+    // }
+  },
   created () {
     this.loadUserChannels()
   },
   methods: {
     async loadUserChannels () {
       let channels = []
-      const localChannels = getItem('channels')
-      // 如果有本地存储的频道列表，则获取使用
-      if (localChannels) {
-        channels = localChannels
-      } else {
-        // 如果没有，则请求获取线上推荐的频道列表
+      if (this.user) {
+        // 已登录，请求获取用户频道列表
         const { data } = await getUserChannels()
         channels = data.data.channels
+      } else {
+        // 未登录
+        const localChannels = getItem('channels')
+        if (localChannels) {
+          // 使用本地存储的频道列表
+          channels = localChannels
+        } else {
+          // 没有就使用默认推荐的频道列表
+          const { data } = await getUserChannels()
+          channels = data.data.channels
+        }
       }
-
       this.channels = channels
     }
   }
