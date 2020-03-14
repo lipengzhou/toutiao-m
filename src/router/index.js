@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import { Dialog } from 'vant'
 
 Vue.use(VueRouter)
 
@@ -54,18 +55,21 @@ const routes = [
   { // 小智同学
     name: 'user-chat',
     path: '/user/chat',
-    component: () => import('@/views/user-chat')
+    component: () => import('@/views/user-chat'),
+    meta: { requiresAuth: true }
   },
   { // 用户收藏
     name: 'user-followers',
     path: '/user/:userId/followers',
     component: () => import('@/views/user-followers'),
-    props: true
+    props: true,
+    meta: { requiresAuth: true }
   },
   { // 用户粉丝
     name: 'user-following',
     path: '/user/:userId/following',
-    component: () => import('@/views/user-following')
+    component: () => import('@/views/user-following'),
+    meta: { requiresAuth: true }
   },
   { // 用户主页
     name: 'user',
@@ -77,12 +81,33 @@ const routes = [
     name: 'my-article',
     path: '/my-article/:type?',
     component: () => import('@/views/my-article'),
-    props: true
+    props: true,
+    meta: { requiresAuth: true }
   }
 ]
 
 const router = new VueRouter({
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  // 校验需要登录才可以访问的非登录页面
+  if (to.name !== 'login' && to.meta.requiresAuth) {
+    Dialog.confirm({
+      title: '该功能需要登录，确认登录吗？'
+    }).then(() => {
+      next({
+        name: 'login',
+        query: {
+          redirect: from.fullPath
+        }
+      })
+    }).catch(() => {
+      // on cancel
+    })
+  } else {
+    next()
+  }
 })
 
 export default router
