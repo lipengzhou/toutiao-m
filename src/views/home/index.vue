@@ -15,7 +15,7 @@
     <!-- /导航栏 -->
 
     <!-- 频道列表 -->
-    <van-tabs v-if="channels.length" class="fixed-tabs" v-model="active" swipeable>
+    <van-tabs ref="tabs" v-if="channels.length" class="fixed-tabs" v-model="active" swipeable>
       <van-tab
         :title="channel.name"
         v-for="channel in channels"
@@ -83,6 +83,7 @@ export default {
     ...mapState(['user'])
   },
   watch: {
+    // 当切换用户、用户退出、用户登录的时候更新频道列表
     user () {
       // 清空频道列表
       this.channels = []
@@ -92,14 +93,14 @@ export default {
 
       // 等待视图更新 -> 重新加载频道列表
       // 注意：文章列表组件必须关闭滚动检查手动 onLoad，否则更新频道列表无法触发自动加载文章列表数据
-      this.$nextTick(() => this.loadUserChannels())
+      // this.$nextTick(() => this.loadUserChannels())
     }
   },
   activated () {
     // 如果没有频道数据，则请求加载
-    // if (!this.channels.length) {
-    //   this.loadUserChannels()
-    // }
+    if (!this.channels.length) {
+      this.loadUserChannels()
+    }
   },
   created () {
     this.loadUserChannels()

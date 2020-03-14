@@ -84,27 +84,9 @@ export default {
   computed: {
     ...mapState(['user']),
     recommendChannels () {
-      const arr = []
-      // 遍历所有频道
-      this.allChannels.forEach(channel => {
-        // 我的频道列表中是否包含当前遍历项
-
-        // [{ id: 1, name: '推荐' }, { id: 2, name: 'Android' } ]
-        // { id: 3: name: '哈哈' }
-
-        // find 方法
-        // 找到第1个满足 item.id === channel.id 条件的元素
-        const ret = this.userChannels.find(item => {
-          return item.id === channel.id
-        })
-
-        // 如果不包含，那我就把它收集到 arr 中
-        if (!ret) {
-          arr.push(channel)
-        }
+      return this.allChannels.filter(item => {
+        return !this.userChannels.find(userItem => userItem.id === item.id)
       })
-
-      return arr
     }
   },
   watch: {},
@@ -136,6 +118,10 @@ export default {
           this.userChannels.splice(index, 1)
           setItem('channels', this.userChannels)
         }
+        // 如果删除的是当前激活频道前面的频道，则更新激活频道
+        if (index <= this.value) {
+          this.$emit('input', this.value - 1)
+        }
       } catch (err) {
         console.log(err)
         this.$toast('操作失败，请稍后重试')
@@ -150,12 +136,13 @@ export default {
             id: channel.id,
             seq: this.userChannels.length
           })
-          this.userChannels.push(channel)
         } else {
           // 未登录，将数据存储到本地
-          this.userChannels.push(channel)
-          setItem('channels', this.userChannels)
+          setItem('channels', [...this.userChannels, channel])
         }
+
+        // 更新视图
+        this.userChannels.push(channel)
       } catch (err) {
         console.log(err)
         this.$toast('添加失败,请稍后重试')
