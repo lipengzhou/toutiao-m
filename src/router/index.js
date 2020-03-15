@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import { Dialog } from 'vant'
+import store from '@/store'
 
 Vue.use(VueRouter)
 
@@ -91,23 +92,26 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  // 校验需要登录才可以访问的非登录页面
-  if (to.name !== 'login' && to.meta.requiresAuth) {
-    Dialog.confirm({
-      title: '该功能需要登录，确认登录吗？'
-    }).then(() => {
-      next({
-        name: 'login',
-        query: {
-          redirect: from.fullPath
-        }
-      })
-    }).catch(() => {
-      // on cancel
-    })
-  } else {
-    next()
+  if (to.name === 'login' || !to.meta.requiresAuth) {
+    return next()
   }
+
+  if (store.state.user) {
+    return next()
+  }
+
+  Dialog.confirm({
+    title: '该功能需要登录，确认登录吗？'
+  }).then(() => {
+    next({
+      name: 'login',
+      query: {
+        redirect: from.fullPath
+      }
+    })
+  }).catch(() => {
+    // on cancel
+  })
 })
 
 export default router
