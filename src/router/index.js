@@ -53,23 +53,21 @@ const routes = [
     path: '/user/profile',
     component: () => import('@/views/user-profile')
   },
+  {
+    path: '/user/avatar',
+    name: 'user-avatar',
+    component: () => import('@/views/user-avatar')
+  },
   { // 小智同学
     name: 'user-chat',
     path: '/user/chat',
     component: () => import('@/views/user-chat'),
     meta: { requiresAuth: true }
   },
-  { // 用户收藏
-    name: 'user-followers',
-    path: '/user/:userId/followers',
-    component: () => import('@/views/user-followers'),
+  { // 用户关注/粉丝
+    path: '/user/:userId/follow',
+    component: () => import('@/views/user-follow'),
     props: true,
-    meta: { requiresAuth: true }
-  },
-  { // 用户粉丝
-    name: 'user-following',
-    path: '/user/:userId/following',
-    component: () => import('@/views/user-following'),
     meta: { requiresAuth: true }
   },
   { // 用户主页

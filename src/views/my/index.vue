@@ -28,11 +28,11 @@
           <span class="count">{{ user.art_count }}</span>
           <span class="text">头条</span>
         </van-grid-item>
-        <van-grid-item :to="`/user/${user.id}/followers`">
+        <van-grid-item :to="`/user/${user.id}/follow`">
           <span class="count">{{ user.follow_count }}</span>
           <span class="text">关注</span>
         </van-grid-item>
-        <van-grid-item>
+        <van-grid-item :to="`/user/${user.id}/follow?tab=followers`">
           <span class="count">{{ user.fans_count }}</span>
           <span class="text">粉丝</span>
         </van-grid-item>
@@ -97,13 +97,6 @@ export default {
       user: {} // 用户信息对象
     }
   },
-  watch: {
-    '$store.state.user' () {
-      if (this.$store.state.user) {
-        this.loadUser()
-      }
-    }
-  },
   created () {
     if (this.$store.state.user) {
       this.loadUser()
@@ -111,6 +104,11 @@ export default {
     globalBus.$on('user-update', () => {
       this.loadUser()
     })
+  },
+  activated () {
+    if (this.$store.state.user) {
+      this.loadUser()
+    }
   },
   methods: {
     onLogout () {

@@ -9,9 +9,10 @@ import { Notify } from 'vant'
 
 // axios.create 方法：复制一个 axios
 const request = axios.create({
-  baseURL: process.env.NODE_ENV === 'production'
-    ? 'http://api-toutiao-web.itheima.net'
-    : 'http://ttapi.research.itcast.cn/'
+  baseURL: 'http://ttapi.research.itcast.cn/'
+  // baseURL: process.env.NODE_ENV === 'production'
+  //   ? 'http://api-toutiao-web.itheima.net'
+  //   : 'http://ttapi.research.itcast.cn/'
 })
 
 /**

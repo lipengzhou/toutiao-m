@@ -32,7 +32,7 @@ export default {
     return {
       loading: false,
       finished: false,
-      page: null,
+      page: 1,
       perPage: 10
     }
   },

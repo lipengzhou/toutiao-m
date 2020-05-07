@@ -27,11 +27,6 @@
         size="small"
         @click="onWriteClick"
       >写评论</van-button>
-      <van-icon
-        :color="comment.is_liking ? '#e5645f' : ''"
-        :name="comment.is_liking ? 'good-job' : 'good-job-o'"
-        @click="onCommentLike(comment)"
-      />
     </div>
     <!-- /评论回复 -->
 

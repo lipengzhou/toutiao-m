@@ -1,12 +1,16 @@
 <template>
   <van-button
+    class="follow-btn"
     v-bind="$attrs"
     :type="value ? 'default' : 'info'"
-    :icon="value ? '' : 'plus'"
     size="small"
     :loading="loading"
     @click.stop="onFollow"
-  >{{ value ? '已关注' : '关注' }}</van-button>
+  >
+    <slot>
+      {{ value ? '已关注' : '关注' }}
+    </slot>
+  </van-button>
 </template>
 
 <script>
@@ -58,4 +62,9 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.van-button--info {
+  background-color: #f85959;
+  border: none;
+}
+</style>
