@@ -2,7 +2,7 @@
 
 ## 扫码体验
 
-<img src="./public/project-host-qrcode.png" width="300" />
+<img src="./public/project-host-qrcode.png" width="200" />
 
 ## 相关资源
 
