@@ -2,14 +2,14 @@
 
 ## 扫码体验
 
-![project-host-qrcode](./public/project-host-qrcode.png)
+<img src="./public/project-host-qrcode.png" width="300" />
 
 ## 相关资源
 
 - GitHub 仓库：https://github.com/lipengzhou/topline-m
-- 学习笔记：http://topline.m.lipengzhou.com/cookbook/
-- 接口文档：http://topline.m.lipengzhou.com/api.html
-- 在线预览：http://topline.m.lipengzhou.com/
+- 学习笔记：https://lipengzhou.com/#/vuejs/toutiao-m/
+- 接口文档：http://toutiao.m.lipengzhou.com/api.html
+- 在线预览：http://toutiao.m.lipengzhou.com/
 
 ## 功能列表
 
