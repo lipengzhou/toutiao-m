@@ -933,6 +933,67 @@
   dependencies:
     any-observable "^0.3.0"
 
+"@sentry/browser@^5.13.2":
+  version "5.16.1"
+  resolved "https://registry.yarnpkg.com/@sentry/browser/-/browser-5.16.1.tgz#7a5ad85d9002de1495b1f63c3a4edb688a27f644"
+  integrity sha512-uXXKRGLWDqwaKO09K1GTTV0Yj+OfELVs+0cDDYqPDow+DlIXyx0gSnZPd0caCqFllUy8JSxb4S9OprYinvks2A==
+  dependencies:
+    "@sentry/core" "5.16.1"
+    "@sentry/types" "5.16.1"
+    "@sentry/utils" "5.16.1"
+    tslib "^1.9.3"
+
+"@sentry/core@5.16.1":
+  version "5.16.1"
+  resolved "https://registry.yarnpkg.com/@sentry/core/-/core-5.16.1.tgz#c5c2f5d3391440f62b3e4dbefafc776449c45c35"
+  integrity sha512-CDKUAUWefZ+bx7tUGm7pgkuJbwn+onAlwzKkLGVg730IP+N/AWSpVtbvFTPiel2+NPiFhWX5/F0SpxDMLPRKfg==
+  dependencies:
+    "@sentry/hub" "5.16.1"
+    "@sentry/minimal" "5.16.1"
+    "@sentry/types" "5.16.1"
+    "@sentry/utils" "5.16.1"
+    tslib "^1.9.3"
+
+"@sentry/hub@5.16.1":
+  version "5.16.1"
+  resolved "https://registry.yarnpkg.com/@sentry/hub/-/hub-5.16.1.tgz#e35d507a134a6ab4c572304dc1143b6bccfa9b45"
+  integrity sha512-Og4zxp0lM9yS6TyKbZ5lQR94f/fNOalodm71Dk4qfBWi0OzfFCVpO4fPOhHtbXEsvMNg5xh0Pe8ezqX3CZ3hTw==
+  dependencies:
+    "@sentry/types" "5.16.1"
+    "@sentry/utils" "5.16.1"
+    tslib "^1.9.3"
+
+"@sentry/integrations@^5.13.2":
+  version "5.16.1"
+  resolved "https://registry.yarnpkg.com/@sentry/integrations/-/integrations-5.16.1.tgz#fc66cd0ad2df9024e16c1bca7dcb64e4819b27b2"
+  integrity sha512-RwxLZN3qSH8v8HrU5aUGh37XxiAMzIQ8rAwd6XlPelixpsvbIAUeIxhutKeBz1xn5ylhMg62GkA9IJBu3mKRZg==
+  dependencies:
+    "@sentry/types" "5.16.1"
+    "@sentry/utils" "5.16.1"
+    tslib "^1.9.3"
+
+"@sentry/minimal@5.16.1":
+  version "5.16.1"
+  resolved "https://registry.yarnpkg.com/@sentry/minimal/-/minimal-5.16.1.tgz#71d16c20a0a396ab3da07b19cb444b4459fd2b11"
+  integrity sha512-RCwEKLneV5BQlv1MEmsCR3I5jajHgVGusBgwGgnFv+4Cn4cNC7OHWH4QbuZ3IHOEHJl7YS074BeluM+7jn0+Tw==
+  dependencies:
+    "@sentry/hub" "5.16.1"
+    "@sentry/types" "5.16.1"
+    tslib "^1.9.3"
+
+"@sentry/types@5.16.1":
+  version "5.16.1"
+  resolved "https://registry.yarnpkg.com/@sentry/types/-/types-5.16.1.tgz#ba69dbf096d121b4197fdd54c35ac941b53d0b6a"
+  integrity sha512-uERNhBdsiWvWG7qTC9QVsvFmOSL8rFfy8usEXeH3l4oCQao9TvGUvXJv6gRfiWmoiJZ1A0608Lj15CORygdbng==
+
+"@sentry/utils@5.16.1":
+  version "5.16.1"
+  resolved "https://registry.yarnpkg.com/@sentry/utils/-/utils-5.16.1.tgz#c663858ab04bbb0cba6660fb37a4ccdb30cc2ec8"
+  integrity sha512-hn2jTc6ZH1lXGij7yqkV6cGhEYxsdjqB5P4MjfrRHB5bk5opY9R89bsAhs1rpanTdwv6Ul0ieR1z18gdIgUf0g==
+  dependencies:
+    "@sentry/types" "5.16.1"
+    tslib "^1.9.3"
+
 "@soda/friendly-errors-webpack-plugin@^1.7.1":
   version "1.7.1"
   resolved "https://registry.npm.taobao.org/@soda/friendly-errors-webpack-plugin/download/@soda/friendly-errors-webpack-plugin-1.7.1.tgz#706f64bcb4a8b9642b48ae3ace444c70334d615d"
@@ -991,10 +1052,10 @@
   resolved "https://registry.npm.taobao.org/@types/semver/download/@types/semver-6.2.0.tgz#d688d574400d96c5b0114968705366f431831e1a"
   integrity sha1-1ojVdEANlsWwEUlocFNm9DGDHho=
 
-"@vant/icons@1.1.15":
-  version "1.1.15"
-  resolved "https://registry.npm.taobao.org/@vant/icons/download/@vant/icons-1.1.15.tgz?cache=0&sync_timestamp=1576034134230&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40vant%2Ficons%2Fdownload%2F%40vant%2Ficons-1.1.15.tgz#53c51ace21e9992bfeeb2e1ad9094fbf6506d116"
-  integrity sha1-U8UaziHpmSv+6y4a2QlPv2UG0RY=
+"@vant/icons@1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@vant/icons/-/icons-1.2.1.tgz#309fecb97a4989866f045ce676b545c454701c8f"
+  integrity sha512-5ivsKQR4ySbdBW5UPoQDVqO6rdc1um3rvq/0VL+ZSA7Y3MdBQ3E4/NL0hoAY5/sZZeYfIDKEP21gpjUzdeEDQQ==
 
 "@vue/babel-helper-vue-jsx-merge-props@^1.0.0":
   version "1.0.0"
@@ -2759,6 +2820,11 @@ create-hmac@^1.1.0, create-hmac@^1.1.2, create-hmac@^1.1.4:
     ripemd160 "^2.0.0"
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
+
+cropperjs@^1.5.6:
+  version "1.5.7"
+  resolved "https://registry.yarnpkg.com/cropperjs/-/cropperjs-1.5.7.tgz#b65019725bae1c6285e881fb661b2141fa57025b"
+  integrity sha512-sGj+G/ofKh+f6A4BtXLJwtcKJgMUsXYVUubfTo9grERiDGXncttefmue/fyQFvn8wfdyoD1KhDRYLfjkJFl0yw==
 
 cross-spawn@^5.0.1:
   version "5.1.0"
@@ -8754,6 +8820,11 @@ tslib@^1.9.0:
   resolved "https://registry.npm.taobao.org/tslib/download/tslib-1.10.0.tgz#c3c19f95973fb0a62973fb09d90d961ee43e5c8a"
   integrity sha1-w8GflZc/sKYpc/sJ2Q2WHuQ+XIo=
 
+tslib@^1.9.3:
+  version "1.13.0"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.13.0.tgz#c881e13cc7015894ed914862d276436fa9a47043"
+  integrity sha512-i/6DQjL8Xf3be4K/E6Wgpekn5Qasl1usyw++dAA35Ue5orEn65VIxOA+YvNNl9HV3qv70T7CNwjODHZrLwvd1Q==
+
 tty-browserify@0.0.0:
   version "0.0.0"
   resolved "https://registry.npm.taobao.org/tty-browserify/download/tty-browserify-0.0.0.tgz#a157ba402da24e9bf957f9aa69d524eed42901a6"
@@ -8994,13 +9065,13 @@ validate-npm-package-license@^3.0.1:
     spdx-correct "^3.0.0"
     spdx-expression-parse "^3.0.0"
 
-vant@2.2.15:
-  version "2.2.15"
-  resolved "https://registry.npm.taobao.org/vant/download/vant-2.2.15.tgz#42c1178842079a43169a66372b56674a1e0a447c"
-  integrity sha1-QsEXiEIHmkMWmmY3K1ZnSh4KRHw=
+vant@^2.6.1:
+  version "2.8.5"
+  resolved "https://registry.yarnpkg.com/vant/-/vant-2.8.5.tgz#6828fadb501cae9dee31de8ca6cb6fe4a526536a"
+  integrity sha512-rVzBbKwDuDISYelVehAfnzrgRL5/OxSo8T+U/YNvXXMeXqLTnnNtt00IpYoKaYWzohV7iDFbiZMWJb0SbMa38g==
   dependencies:
     "@babel/runtime" "7.x"
-    "@vant/icons" "1.1.15"
+    "@vant/icons" "1.2.1"
     "@vue/babel-helper-vue-jsx-merge-props" "^1.0.0"
     vue-lazyload "1.2.3"
 
@@ -9264,9 +9335,9 @@ websocket-driver@>=0.5.1:
     websocket-extensions ">=0.1.1"
 
 websocket-extensions@>=0.1.1:
-  version "0.1.3"
-  resolved "https://registry.npm.taobao.org/websocket-extensions/download/websocket-extensions-0.1.3.tgz#5d2ff22977003ec687a4b87073dfbbac146ccf29"
-  integrity sha1-XS/yKXcAPsaHpLhwc9+7rBRszyk=
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/websocket-extensions/-/websocket-extensions-0.1.4.tgz#7f8473bc839dfd87608adb95d7eb075211578a42"
+  integrity sha512-OqedPIGOfsDlo31UNwYbCFMSaO9m9G/0faIHj5/dZFDMFqPTcx6UwqyOy3COEaEOg/9VsGIpdqn62W5KhoKSpg==
 
 which-module@^2.0.0:
   version "2.0.0"
