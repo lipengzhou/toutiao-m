@@ -1,16 +1,22 @@
 module.exports = {
   publicPath: '/',
-  // publicPath: process.env.NODE_ENV === 'production'
-  //   ? '/topline-mobile-preview/'
-  //   : '/',
   devServer: {
-    port: 8081
+    proxy: {
+      '/api': {
+        target: 'http://ttapi.research.itcast.cn/',
+        changeOrigin: true,
+        ws: true,
+        pathRewrite: {
+          '^/api/': ''
+        }
+      }
+    }
   },
   css: {
     loaderOptions: {
       less: {
         modifyVars: {
-          'blue': '#3296FA',
+          blue: '#3296FA',
           'text-color': '#333'
         }
       }

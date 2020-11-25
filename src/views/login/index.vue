@@ -122,7 +122,7 @@ export default {
       this.isSending = true
 
       // 让验证码输入框聚焦
-      this.$refs['code'].focus()
+      this.$refs.code.focus()
 
       // 开始倒计时
       this.$nextTick(() => {
