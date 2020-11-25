@@ -2,12 +2,12 @@
 
 ## 扫码体验
 
-<img src="./public/project-host-qrcode.png" width="200" />
+<img src="./public/qrcode_toutiao.m.lipengzhou.com.png" width="200" />
 
 ## 相关资源
 
 - GitHub 仓库：https://github.com/lipengzhou/topline-m
-- 学习笔记：https://lipengzhou.com/#/vuejs/toutiao-m/
+- 学习笔记：https://www.yuque.com/lipengzhou/toutiao-mobile-vue/
 - 接口文档：http://toutiao.m.lipengzhou.com/api.html
 - 在线预览：http://toutiao.m.lipengzhou.com/
 
