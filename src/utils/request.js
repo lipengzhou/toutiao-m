@@ -7,7 +7,8 @@ import JSONBig from 'json-bigint'
 
 const request = axios.create({
   // 接口的基准路径
-  baseURL: 'http://ttapi.research.itcast.cn/',
+  baseURL: '/api',
+  // baseURL: 'http://ttapi.research.itcast.cn/',
 
   // 自定义后端返回的原始数据
   // data: 后端返回的原始数据，说白了就是 JSON 格式的字符串
