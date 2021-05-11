@@ -19,7 +19,7 @@
     "jwt-decode": "^2.2.0",
     "less": "^3.10.3",
     "less-loader": "^5.0.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "socket.io-client": "^2.3.0",
     "vant": "^2.6.1",
     "vee-validate": "^3.2.1",
